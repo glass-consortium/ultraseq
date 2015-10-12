@@ -1,0 +1,12 @@
+[submodule "params"]
+	path = params
+	url = https://github.com/sahilseth/params
+[submodule "flowr"]
+	path = flowr
+	url = https://github.com/sahilseth/flowr
+[submodule "ngsflows"]
+	path = ngsflows
+	url = https://github.com/sahilseth/ngsflows
+[submodule "funr"]
+	path = funr
+	url = https://github.com/sahilseth/funr
