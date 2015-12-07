@@ -11,11 +11,13 @@
 
 # ------------------------------------ define paths to pipelines etc ----------------------------------
 
-# since R does not support dynamic detection of paths, please
-# specify FULL path to the ultraseq_conf file
+# since R does not support dynamic detection of paths, we will use detect_home()
+# to guess it.
+# However, to reduce issues you may specify FULL path to the ultraseq.conf file
+
+
+
 # source: https://github.com/molgenis/molgenis-pipelines/wiki/How-to-source-another_file.R-from-within-your-R-script
-
-
 detect_home <- function(){
     this.file = NULL
     # This file may be 'sourced'
@@ -92,8 +94,8 @@ Please use 'flowr -h function' to obtain further information about the usage of 
 
 Examples:
 # Run a small pipeline
-ultraseq run x=sleep_pipe platform=local
-ultraseq run x=sleep_pipe platform=local execute=TRUE
+ultraseq run x=fastq_bam_mutect platform=local
+ultraseq run x=fastq_bam_mutect platform=local execute=TRUE
 
 # When running a pipeline, flowr creates a unique working
 # directory for each flow. This is used to monitor, kill and re-run the flow.
@@ -101,17 +103,17 @@ ultraseq run x=sleep_pipe platform=local execute=TRUE
 
 # get status on a batch of sample:
 # (all flows with 'sleep_pipe' in their name are checked and their status is shown)
-ultraseq status x=~/flowr/runs/sleep_pipe*
+ultraseq status x=~/flowr/runs/fastq_bam_mutect*
 ## Use parent folder to get summary of all the flowr
 ultraseq status x=~/flowr/runs
 
 # kill the flow
-ultraseq kill x=~/flowr/runs/sleep_pipe*
+ultraseq kill x=~/flowr/runs/fastq_bam_mutect*
 ## if their are multiple flows, need to to be sure
-ultraseq kill x=~/flowr/runs/sleep_pipe* force=TRUE
+ultraseq kill x=~/flowr/runs/fastq_bam_mutect* force=TRUE
 
 # rerun a flow
-ultraseq rerun x=~/flowr/runs/sleep_pipe-samp1-20150921-11-51-31-F3VftKBp rerun=start_from
+ultraseq rerun x=~/flowr/runs/fastq_bam_mutect-samp1-20150921-11-51-31-F3VftKBp start_from=markdup
 "
 
 
@@ -122,3 +124,23 @@ out = funr(args = commandArgs(trailingOnly = TRUE), help_text = help_text)
 
 # parse the output nicely using render_funr
 funr::render_funr(out)
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+# END

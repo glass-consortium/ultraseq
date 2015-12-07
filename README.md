@@ -1,8 +1,9 @@
 
+This repo is under active development, please raise a issue if you have trouble
+using/installing it.
 
-This repo contains a somatic calling workflow
 
-
+We have various pipelines available as part of ultraseq.
 
 ```
 ├── bin
@@ -23,4 +24,19 @@ This repo contains a somatic calling workflow
     ├── fastq_preprocess.R
     ├── fastq_preprocess.def
     └── fastq_preprocess.pdf
+```
+
+## installation
+
+```
+# install dependencies
+Rscript -e 'install.packages("flowr", repos = "http://cran.rstudio.com")'
+Rscript -e 'install.packages("ngsflows", , repos = c(CRAN="http://cran.rstudio.com", DRAT="http://sahilseth.github.io/drat"))'
+
+# get somatic variant calling workflows
+git clone https://github.com/sahilseth/ultraseq.git
+
+cd ultraseq
+chmod u+x ultraseq
+bin/ultraseq
 ```
