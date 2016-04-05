@@ -2,7 +2,8 @@
 ## Rscript ~/projects/papers_flow/analysis/run_fastq_haplotyper.R
 
 #library(params)
-library(ngsflows)
+library(funr)
+library(ultraseq)
 
 # this workflow imports a few sub-workflows
 # fetch_pipes would search
@@ -10,8 +11,13 @@ library(ngsflows)
 # ~/flowr/pipes and
 # {{{ultraseq_home}}}/pipes
 # if you want you replace this with absolute paths
-source(fetch_pipes("fastq_preprocess.R")$pip)
-source(fetch_pipes("fastq_bam_bwa.R")$pip)
+script_home = detect_home()
+source(script_home, "fastq_preprocess.R")
+source(script_home, "fastq_bam_bwa.R")
+
+# optionally, find files in flowr pipelines space
+#source(fetch_pipes("fastq_preprocess.R")$pip)
+#source(fetch_pipes("fastq_bam_bwa.R")$pip)
 
 # in the future this workflow would be renamed and changed
 # to include a cnv and trsnslocation caller
@@ -30,8 +36,7 @@ fastq_mutect <- function(
   samplename_tum, samplename_ref
   ){
 
-
-  ## bam file names depend on the sample names we supply
+  # bam file names depend on the sample names we supply
   #fq_pre = fetch_pipes("fastq_preprocess")
   paired_name = paste0(samplename_tum, "___", samplename_ref)
 
@@ -55,7 +60,6 @@ fastq_mutect <- function(
   paired_name = paste0(samplename_tum, "___", samplename_ref)
 
   # -- run mutect on each of the smaller chrs
-
   print(preproc_tum$outfiles$recalibed_bam)
 
   mut = mutect(tumor_bam = preproc_tum$outfiles$recalibed_bam,

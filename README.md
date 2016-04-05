@@ -1,4 +1,6 @@
 
+
+
 This repo is under active development, please raise a issue if you have trouble
 using/installing it.
 
@@ -40,3 +42,23 @@ cd ultraseq
 chmod u+x ultraseq
 bin/ultraseq
 ```
+
+```
+flowr should be available in all nodes
+flowr ultraseq::merge_sheets
+```
+
+# scenario 1
+#- start by using a single bam
+#-
+flowr create_sample_sheet
+flowr run ultraseq
+flowr to_flow
+
+# scenario 2
+#start by using a single bam
+
+# shows helo
+flowr run -h
+flowr run ultraseq
+flowr run ultraseq tbam=$tbam nbam=$nbam oprefix=$oprefix

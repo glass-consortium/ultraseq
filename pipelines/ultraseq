@@ -1,0 +1,146 @@
+#!/usr/bin/env Rscript
+# ------------------------------------ header ----------------------------------
+# Copyright 2014, Sahil Seth
+# licence: MIT
+# sahil.seth@me.com
+
+# This scripts tweaks, the original flowr script
+# so that working to make it easier for users to
+# use flows in a specific directory.
+
+
+# ------------------------------------ define paths to pipelines etc ----------------------------------
+
+# since R does not support dynamic detection of paths, we will use detect_home()
+# to guess it.
+# However, to reduce issues you may specify FULL path to the ultraseq.conf file
+
+
+
+# source: https://github.com/molgenis/molgenis-pipelines/wiki/How-to-source-another_file.R-from-within-your-R-script
+detect_home <- function(){
+    this.file = NULL
+    # This file may be 'sourced'
+    for (i in -(1:sys.nframe())) {
+        if (identical(sys.function(i), base::source)) this.file = (normalizePath(sys.frame(i)$ofile))
+    }
+
+    if (!is.null(this.file)) return(dirname(this.file))
+
+    # But it may also be called from the command line
+    cmd.args = commandArgs(trailingOnly = FALSE)
+    cmd.args.trailing = commandArgs(trailingOnly = TRUE)
+    cmd.args = cmd.args[seq.int(from=1, length.out=length(cmd.args) - length(cmd.args.trailing))]
+    res = gsub("^(?:--file=(.*)|.*)$", "\\1", cmd.args)
+
+    # If multiple --file arguments are given, R uses the last one
+    res = tail(res[res != ""], 1)
+
+
+    if (0 < length(res))
+			return(tools::file_path_as_absolute(dirname(res)))
+
+    # Both are not the case. Maybe we are in an R GUI?
+    return(NULL)
+}
+
+# this dynamically detects path to the script
+ultraseq_home = detect_home()
+message("ultraseq root dir: ", ultraseq_home)
+
+
+
+
+
+# ------------------------------------ install libraries ----------------------------------
+# check if flowr, funr is not installed and install it
+options(repos = c("CRAN" = "http://cran.rstudio.com", DRAT = "http://sahilseth.github.io/drat"))
+if(!require(funr, quietly = TRUE))
+  install.packages("funr")
+if(!require(flowr, quietly = TRUE))
+  install.packages("flowr")
+
+# ------------------------------------ load libraries ----------------------------------
+suppressWarnings(suppressMessages(library(funr, verbose = FALSE, quietly = TRUE, warn.conflicts = FALSE)))
+suppressWarnings(suppressMessages(library(flowr, verbose = FALSE, quietly = TRUE, warn.conflicts = FALSE)))
+
+
+# ------------------------------------ load default paths etc ----------------------------------
+opts_flow$set(ultraseq_home = ultraseq_home)
+opts_flow$load(file.path(ultraseq_home, "ultraseq.conf"))
+
+
+# ------------------------------------ define help text ----------------------------------
+## flowr::setup()
+## One may define their own functions here
+## or load default packages they use quite often
+## for example load devtools, knitr etc.
+
+
+
+
+help_text = "
+This is a convenience wrapper around the flowr package, enabling access from the terminal.
+
+Usage: ultraseq function [arguments]
+
+  status          Detailed status of a flow(s).
+  rerun           rerun a previously failed flow
+  kill            Kill the flow, upon providing working directory
+  fetch_pipes     Checking what modules and pipelines are available; flowr fetch_pipes
+
+Please use 'flowr -h function' to obtain further information about the usage of a specific function.
+
+
+Examples:
+# Run a small pipeline
+ultraseq run x=fastq_bam_mutect platform=local
+ultraseq run x=fastq_bam_mutect platform=local execute=TRUE
+
+# When running a pipeline, flowr creates a unique working
+# directory for each flow. This is used to monitor, kill and re-run the flow.
+# wd=<path to a flowr execution folder>
+
+# get status on a batch of sample:
+# (all flows with 'sleep_pipe' in their name are checked and their status is shown)
+ultraseq status x=~/flowr/runs/fastq_bam_mutect*
+## Use parent folder to get summary of all the flowr
+ultraseq status x=~/flowr/runs
+
+# kill the flow
+ultraseq kill x=~/flowr/runs/fastq_bam_mutect*
+## if their are multiple flows, need to to be sure
+ultraseq kill x=~/flowr/runs/fastq_bam_mutect* force=TRUE
+
+# rerun a flow
+ultraseq rerun x=~/flowr/runs/fastq_bam_mutect-samp1-20150921-11-51-31-F3VftKBp start_from=markdup
+"
+
+
+# ------------------------------------ parse args, and run ----------------------------------
+# parse all arugments using the funr()
+# then run the required function, with specified paramaters
+out = funr(args = commandArgs(trailingOnly = TRUE), help_text = help_text)
+
+# parse the output nicely using render_funr
+funr::render_funr(out)
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+# END
