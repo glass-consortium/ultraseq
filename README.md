@@ -1,7 +1,7 @@
 
 # Ultraseq
 
-## The pipelines and the R pakcakge are still under works
+## Pipelines and the R package are still under active development
 
 The idea is to create a framework addressing some of the following scenarios
 
