@@ -1,7 +1,13 @@
 .onAttach <- function(lib, pkg){
   packageStartupMessage("ultraseq: genomic flows made faster")
 
-  fls = unique(unlist(sapply(c("ultraseq"), flowr:::fetch_conf)))
+  
+  conf_dir = c(system.file(package = "ultraseq", "conf"),
+          system.file(package = "ultraseq", "inst/conf"))
+  conf_dir = conf_dir[file.exists(conf_dir)]
+  
+  fls = fetch_conf("*", places = conf_dir)
+  
   suppressMessages(flowr:::opts_flow$load(fls, check = FALSE))
 
   if(flowr:::opts_flow$get('verbose') > 1)
