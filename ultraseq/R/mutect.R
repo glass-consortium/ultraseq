@@ -1,4 +1,12 @@
 
+
+fq_set <- function(fq1, fq2){
+  
+  
+}
+
+
+
 #' A wrapper around somatic mutation caller MuTect
 #'
 #' This generates a set of commandlines, per chromosome
@@ -55,62 +63,34 @@ mutect <- function(tumor_bam,
                    
 ){
   
-  # samplename, may not always be unique.
-  # determine output file name, if out_prefix is not provided
-  if(missing(out_prefix))
-    bam_prefix <- paste0(gsub(".bam", "", basename(tumor_bam)), "__", gsub(".bam", "", basename(normal_bam)))
-  else
-    bam_prefix <- out_prefix
-  
-  # if(missing(is_merged))
-  #   is_merged = !as.logical(opts_flow$get("split_by_chr"))
-  
-  # if file is available determine whether to split for faster processing
-  # even if the bam files are pre-split its better to explicitily supply the
-  # chr info
-  if(split_by_chr){
-    
-    #chrs_info <- get_bam_chrs(tumor_bam)
-    chrs_info <- get_fasta_chrs(ref_fasta)
-    chrs_prefix <- paste0(bam_prefix, "_", chrs_info) # bam names
-    intervals_opts = paste0(" -L ", chrs_info)             ## interval files
-    
-    if(is_merged & length(tumor_bam) > 1){
-      stop("multiple bams supplied, expected 1; perhaps is_merged should be FALSE?")
-      
-    }else if(!is_merged & length(tumor_bam) == 1){
-      stop("single bam supplied, expected multiple (one for each chromosome); perhaps is_merged should be TRUE")
-    }
-  }else{
-    # dont split
-    chrs_prefix = paste0(bam_prefix, ".")
-    intervals_opts = ""
-  }
-  
+  pairedset = paired_bam_set(tumor_bam = tumor_bam, normal_bam = normal_bam, 
+                           out_prefix = out_prefix, 
+                           is_merged = is_merged, split_by_chr = split_by_chr)
+
   check_args(ignore = "out_prefix")
   
   pipename = match.call()[[1]]
   message("Generating a ", pipename, " flowmat for sample: ", samplename)
   
-  mutects <- paste0(chrs_prefix, ".mutect.txt")
-  wigs <- paste0(chrs_prefix, ".wig")
+  mutects <- paste0(pairedset$out_prefix_chr, ".mutect.txt")
+  wigs <- paste0(pairedset$out_prefix_chr, ".wig")
   
-  if(!(length(intervals_opts) == length(wigs) | length(intervals_opts) == 1))
-    stop("length of intervals should be same as wigs OR 1")
+  lapply(list(tumor_bam, normal_bam, pairedset$out_prefix_chr, pairedset$chrs_names), length)
   
   cmd_mutect <- sprintf("%s %s -Djava.io.tmpdir=%s -jar %s --analysis_type MuTect --reference_sequence %s --input_file:tumor %s --input_file:normal %s --out %s  --coverage_file %s %s %s",
-                        java_exe, mem_mutect, java_tmp, mutect_jar, ref_fasta, tumor_bam, normal_bam,
+                        java_exe, mem_mutect, java_tmp, mutect_jar, ref_fasta, 
+                        tumor_bam, normal_bam,
                         mutects, wigs,
-                        mutect_opts, intervals_opts)
+                        mutect_opts, pairedset$gatk_intervals)
   cmds <- list(mutect = cmd_mutect)
   
   # .filter='judgement==KEEP'
-  if(split_by_chr){
-    merged_mutect = paste0(bam_prefix, "_merged.mutect.tsv")
-    cmd_merge = sprintf("flowr ultraseq::merge_sheets x=%s outfile=%s",
-                        paste(mutects, collapse = ","), merged_mutect)
-    cmds = c(cmds, mutect_merge = cmd_merge)
-  }
+  # in case of a single file, this mean a read and write operation
+  merged_mutect = paste0(pairedset$out_prefix, "_merged.mutect.tsv")
+  cmd_merge = sprintf("flowr ultraseq::merge_sheets x=%s outfile=%s",
+                      paste(mutects, collapse = ","), merged_mutect)
+
+  cmds = c(cmds, mutect_merge = cmd_merge)
   
   flowmat = to_flowmat(cmds, samplename = samplename)
   return(list(flowmat=flowmat, outfiles=list(all = mutects, merged = merged_mutect)))
