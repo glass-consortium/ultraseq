@@ -4,7 +4,7 @@
 \alias{preprocess}
 \title{Pre-process bam files following Broad's best practices for variant calling, starting from aligned BAM file}
 \usage{
-preprocess(x, outfile, samplename = opts_flow$get("samplename"),
+preprocess(bam, outfile, samplename = opts_flow$get("samplename"),
   split_by_chr = opts_flow$get("split_by_chr"),
   java_exe = opts_flow$get("java_exe"),
   java_tmp = opts_flow$get("java_tmp"),
@@ -24,17 +24,91 @@ preprocess(x, outfile, samplename = opts_flow$get("samplename"),
   gatk_printreads_opts = opts_flow$get("gatk_printreads_opts"))
 }
 \arguments{
+\item{bam}{}
+
+\item{outfile}{}
+
+\item{samplename}{}
+
+\item{split_by_chr}{}
+
 \item{java_exe}{path to java}
 
 \item{java_tmp}{path to java tmp, can leave blank}
 
+\item{gatk_jar}{}
+
+\item{picard_dir}{}
+
+\item{samtools_exe}{}
+
 \item{cpu_markdup}{not used.}
+
+\item{mem_markdup}{}
 
 \item{cpu_target}{number of threads used for GATK target creation step}
 
-\item{q_obj}{is provided output is a flow object, else a list of commands to run}
+\item{mem_target}{}
 
-\item{java_mem_markdup}{memory provided to java}
+\item{cpu_realign}{}
+
+\item{mem_realign}{}
+
+\item{cpu_baserecalib}{}
+
+\item{mem_baserecalib}{}
+
+\item{cpu_printreads}{}
+
+\item{mem_printreads}{}
+
+\item{ref_fasta}{}
+
+\item{gatk_target_opts}{}
+
+\item{gatk_realign_opts}{}
+
+\item{gatk_baserecalib_opts}{}
+
+\item{gatk_printreads_opts}{}
+
+\item{bam}{}
+
+\item{outfile}{}
+
+\item{samplename}{}
+
+\item{split_by_chr}{}
+
+\item{java_exe}{}
+
+\item{java_tmp}{}
+
+\item{gatk_jar}{}
+
+\item{picard_dir}{}
+
+\item{samtools_exe}{}
+
+\item{cpu_markdup}{}
+
+\item{mem_markdup}{}
+
+\item{cpu_target}{}
+
+\item{mem_target}{}
+
+\item{cpu_realign}{}
+
+\item{ref_fasta}{}
+
+\item{gatk_target_opts}{}
+
+\item{gatk_realign_opts}{}
+
+\item{gatk_baserecalib_opts}{}
+
+\item{gatk_printreads_opts}{}
 }
 \description{
 This function provides a wrapper around the best practices described on \href{https://www.broadinstitute.org/gatk/guide/bp_step.php?p=1}{GATK's website}.
@@ -63,9 +137,8 @@ Flow following Broad's best practices for variant calling, starting from sorted 
 \dontrun{
 ## load options, including paths to tools and other parameters
 load_opts(fetch_conf("ngsflows.conf"), check = FALSE)
-out = bam_preprocess("my_wex.bam", samplename = "samp", split_by_chr = TRUE)
+out = preprocess("my_wex.bam", samplename = "samp", split_by_chr = TRUE)
 
 }
-
 }
 

@@ -4,7 +4,8 @@
 \alias{fastqc}
 \title{Fastqc}
 \usage{
-fastqc(fqs, fqpath, odir, fastqc_exe = opts_flow$get("fastqc_exe"),
+fastqc(fqs, samplename = opts_flow$get("samplename"), fqpath, odir,
+  fastqc_exe = opts_flow$get("fastqc_exe"),
   cpu_fastqc = opts_flow$get("cpu_fastqc"), casava = TRUE,
   fastqc_opts = opts_flow$get("fastqc_opts"))
 }

@@ -5,7 +5,7 @@
 \title{A wrapper around somatic mutation caller MuTect}
 \usage{
 mutect(tumor_bam, normal_bam, samplename = opts_flow$get("samplename"),
-  outfile, is_merged = TRUE, split_by_chr = TRUE,
+  out_prefix, is_merged = TRUE, split_by_chr = TRUE,
   java_exe = opts_flow$get("java_exe"),
   java_tmp = opts_flow$get("java_tmp"),
   mutect_jar = opts_flow$get("mutect_jar"),
@@ -21,11 +21,14 @@ mutect(tumor_bam, normal_bam, samplename = opts_flow$get("samplename"),
 
 \item{samplename}{name of the sample, to be added to the flowmat}
 
-\item{outfile}{output file name [optional]}
+\item{out_prefix}{output file name [optional].
+By default, this is created using names of tumor and normal bam files.}
 
-\item{is_merged}{specify if the input bam is already split by chromosomes (FALSE) or is a merged file with all chromosome (TRUE). [FALSE]}
+\item{is_merged}{specify if the input bam is already split by chromosomes (FALSE) 
+or is a merged file with all chromosome (TRUE). [FALSE]}
 
-\item{split_by_chr}{fork running mutect by chromosome to make it faster.}
+\item{split_by_chr}{fork running mutect by chromosome to make it faster [TRUE].
+Turning is option OFF is not fully supported.}
 
 \item{java_exe}{path to java's executable [java]}
 
@@ -40,6 +43,10 @@ mutect(tumor_bam, normal_bam, samplename = opts_flow$get("samplename"),
 \item{ref_fasta}{path to the reference genome in fasta format}
 
 \item{mutect_opts}{additional arguments passed onto mutect}
+}
+\value{
+The function returns a flowmat with all the commands. 
+The final file is called \code{'out_prefix'_merged.mutect.tsv}.
 }
 \description{
 This generates a set of commandlines, per chromosome
