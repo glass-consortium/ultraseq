@@ -1,15 +1,19 @@
 jobname	sub_type	prev_jobs	dep_type	queue	memory_reserved	walltime	cpu_reserved	platform	jobid
 
+# processing tumor sample
 markdup_t	serial	none	none	medium	16384	23:00	1	lsf	6
 target_t	serial	markdup_t	serial	medium	16384	23:00	8	lsf	7
 realign_t	scatter	target_t	burst	medium	16384	23:00	1	lsf	8
 baserecalib_t	scatter	realign_t	serial	medium	16384	23:00	8	lsf	9
 printreads_t	scatter	baserecalib_t	serial	medium	16384	23:00	4	lsf	10
 
-markdup_r	serial	none	none	medium	16384	23:00	1	lsf	16
-target_r	serial	markdup_r	serial	medium	16384	23:00	8	lsf	17
-realign_r	scatter	target_r	burst	medium	16384	23:00	1	lsf	18
-baserecalib_r	scatter	realign_r	serial	medium	16384	23:00	8	lsf	19
-printreads_r	scatter	baserecalib_r	serial	medium	16384	23:00	4	lsf	20
-mutect	scatter	"printreads_t,printreads_r"	serial	medium	16384	23:00	4	lsf	21
+# processing normal sample
+markdup_n	serial	none	none	medium	16384	23:00	1	lsf	16
+target_n	serial	markdup_n	serial	medium	16384	23:00	8	lsf	17
+realign_n	scatter	target_n	burst	medium	16384	23:00	1	lsf	18
+baserecalib_n	scatter	realign_n	serial	medium	16384	23:00	8	lsf	19
+printreads_n	scatter	baserecalib_n	serial	medium	16384	23:00	4	lsf	20
+
+# config for mutect
+mutect	scatter	"printreads_t,printreads_n"	serial	medium	16384	23:00	4	lsf	21
 mutect_merge	serial	mutect	gather	medium	16384	23:00	4	lsf	21

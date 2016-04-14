@@ -32,8 +32,8 @@ use 'flowr run -h' for more details on additional optional arguments.
 #' @examples
 bam_mutect <- function(tumor_bam, 
                        normal_bam, 
-                       samplename_t,
-                       samplename_r,# usually tumor___normal
+                       tumor_name,
+                       normal_name,# usually tumor___normal
                        out_prefix
 ){
   
@@ -55,21 +55,24 @@ out_prefix     output paired name
   if(missing(tumor_bam))
     stop(help_text)
   
+  tumor_bam = sapply(tumor_bam, tools::file_path_as_absolute)
+  normal_bam = sapply(normal_bam, tools::file_path_as_absolute)
+  
   # bam file names depend on the sample names we supply
   #fq_pre = fetch_pipes("fastq_preprocess")
-  paired_name = paste0(samplename_t, "___", samplename_r)
+  paired_name = paste0(tumor_name, "___", normal_name)
   #debug(preprocess)
   preproc_tum = preprocess(bam = tumor_bam, 
-                           samplename = samplename_t,
+                           samplename = tumor_name,
                            split_by_chr = TRUE)
   
-  preproc_ref = preprocess(bam = tumor_bam, 
-                           samplename = samplename_r,
+  preproc_ref = preprocess(bam = normal_bam, 
+                           samplename = normal_name,
                            split_by_chr = TRUE)
   
   # add suffix to jobnme
   preproc_tum$flowmat$jobname = paste0(preproc_tum$flowmat$jobname, "_t")
-  preproc_ref$flowmat$jobname = paste0(preproc_ref$flowmat$jobname, "_r")
+  preproc_ref$flowmat$jobname = paste0(preproc_ref$flowmat$jobname, "_n")
   
   # -- run mutect on each of the smaller chrs
   #print(preproc_tum$outfiles$recalibed_bam)
