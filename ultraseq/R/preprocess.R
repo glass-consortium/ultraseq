@@ -97,6 +97,7 @@ preprocess <- function(bam,
 
                        ref_fasta = opts_flow$get('ref_fasta'),
 
+                       picard_markdup_opts = opts_flow$get('picard_markdup_opts'),
                        gatk_target_opts = opts_flow$get('gatk_target_opts'),
                        gatk_realign_opts = opts_flow$get('gatk_realign_opts'),
                        gatk_baserecalib_opts = opts_flow$get('gatk_baserecalib_opts'),
@@ -113,8 +114,10 @@ preprocess <- function(bam,
   # ------------ dedup; SINGLE FILE
   dedupbam <- paste0(bamset$out_prefix, ".marked.bam")
   metricsfile <- paste0(bamset$out_prefix, ".marked.metrics")
-  cmd_markdup <- sprintf("%s %s -Djava.io.tmpdir=%s -jar %s/picard.jar MarkDuplicates INPUT=%s OUTPUT=%s METRICS_FILE=%s REMOVE_DUPLICATES=false ASSUME_SORTED=true VALIDATION_STRINGENCY=LENIENT CREATE_INDEX=true",
-                         java_exe, mem_markdup, java_tmp, picard_dir, bamset$bam, dedupbam, metricsfile)
+  cmd_markdup <- sprintf("%s %s -Djava.io.tmpdir=%s -jar %s/picard.jar MarkDuplicates INPUT=%s OUTPUT=%s METRICS_FILE=%s %s",
+                         java_exe, mem_markdup, java_tmp, picard_dir, bamset$bam,
+                         dedupbam, metricsfile, 
+                         picard_markdup_opts)
   cmd_markdup
 
   ## ------------ realign; SINGLE FILE
