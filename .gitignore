@@ -1,0 +1,11 @@
+.Rproj.user
+.Rhistory
+.Rhistory
+*.R~
+*Rplots.pdf
+
+*.#*
+
+ultraseq/README.html
+
+*.DS_Store

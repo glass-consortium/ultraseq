@@ -38,7 +38,7 @@ fq_set <- function(fq1, fq2){
 #' x = "tumor.bam"
 #' y = "normal.bam"
 #'
-#' out = mutect(x, y, is_merged = TRUE)
+#' out = mutect(x, y, samplename="tumor_normal", is_merged = TRUE)
 #'
 #' }
 mutect <- function(tumor_bam,
@@ -98,33 +98,3 @@ mutect <- function(tumor_bam,
 }
 
 
-#' Title
-#'
-#' @param fl a vector of files to be merged
-#' @param outfile path to the merged output file
-#'
-#' @export
-merge_sheets <- function(x, outfile, .filter = NA, ...){
-  tmp <- lapply(x, function(fl){
-    message(".", appendLF = FALSE)
-    tab = read_sheet(fl, ...)
-    # convert all columns to character, fool proofing
-    tab[] <- lapply(x, as.character)
-    
-    if(!is.na(.filter)){
-      tab2 = dplyr::filter_(tab, .filter)
-      return(tab2)
-    }else{
-      return(tab)
-    }
-  })
-  
-  #mrgd = try(do.call(rbind, tmp))
-  # if fails try using dplyr
-  mrgd = try(bind_rows(tmp))
-  
-  if(!missing(outfile))
-    write_sheet(mrgd, outfile)
-  
-  invisible(mrgd)
-}
