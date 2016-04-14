@@ -1,4 +1,4 @@
-## A list of common names
+## A list of common argument names
 
 **arguments**
 
