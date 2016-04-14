@@ -34,6 +34,7 @@ fastq_mutect <- function(
   fastq_path_tum,
   fastq_path_ref,
   samplename_tum, samplename_ref
+  
   ){
 
   # bam file names depend on the sample names we supply
@@ -55,9 +56,6 @@ fastq_mutect <- function(
   # add suffix to jobnme
   preproc_tum$flowmat$jobname = paste0(preproc_tum$flowmat$jobname, "_tum")
   preproc_ref$flowmat$jobname = paste0(preproc_ref$flowmat$jobname, "_ref")
-
-  # let the tools re
-  paired_name = paste0(samplename_tum, "___", samplename_ref)
 
   # -- run mutect on each of the smaller chrs
   print(preproc_tum$outfiles$recalibed_bam)

@@ -131,13 +131,14 @@ paired_bam_set <- function(tumor_bam,
     stop(">> multiple bams supplied, and out_prefix is missing")
   
   if(obj$bam$len == 1 & missing(out_prefix))
-    obj$out_prefix <- paste0(gsub(".bam", "", basename(tumor_bam)), "__", gsub(".bam", "", basename(normal_bam)))
+    obj$out_prefix <- paste0(gsub(".bam", "", basename(tumor_bam)), "__", 
+                             gsub(".bam", "", basename(normal_bam)))
   else
     obj$out_prefix = out_prefix
   
   tmp <- get_fasta_chrs(ref_fasta)
-  obj$chrs_names = tmp$chrs
-  obj$chrs_lengths = tmp$lens
+  obj$chr_names = tmp$chrs
+  obj$chr_lengths = tmp$lens
   
   if(split_by_chr){
     obj$out_prefix_chr <- paste0(obj$out_prefix, "_", obj$chrs_names) # bam names
