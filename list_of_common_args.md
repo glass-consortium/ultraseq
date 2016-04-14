@@ -18,10 +18,12 @@
 
 **function names**
 
-## All functions in the R package, suggest ONE process, for example:
-
-- preprocess
-- mutect
+- `preprocess`
+- `mutect`
+- `bwa`
+- `samtools_sort`
+- `samtools_merge`
+- `samtools_index`
 
 
 **pipeline names**
