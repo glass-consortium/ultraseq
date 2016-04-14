@@ -5,7 +5,22 @@
 
 The idea is to create a framework addressing some of the following scenarios
 
-**NOTE:** These do not work, currently.
+**NOTE:** These have been tested limitedly, please file a bug report in-case of errors.
+
+
+
+#### Installation
+
+```
+# install flowr
+Rscript -e 'install.packages("flowr")'
+
+git clone https://github.com/flow-r/ultraseq.git
+
+flowr devtools::install pkg=ultraseq/ultraseq
+```
+
+
 
 **scenario 1**
 

@@ -7,6 +7,8 @@ library(ultraseq)
 #script_path = funr::get_script_path()
 #opts_flow$load(file.path(script_path, "ultraseq.conf"))
 
+
+# this is a common help arg, and will be moved to ultraseq
 help_text_flowr_run = "
 Optional (used by flowr::run):
 def             flow definition file
