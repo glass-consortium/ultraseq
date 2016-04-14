@@ -2,7 +2,8 @@ bam_set <- function(bam, outfile, ref_fasta, split_by_chr){
   
   obj = list()
   
-  bam = tools::file_path_as_absolute(bam)
+  # only done by MAIN pipeline function
+  #bam = tools::file_path_as_absolute(bam)
   assert_that(has_extension(bam, "bam"))
   obj$bam = bam
   
@@ -108,8 +109,6 @@ paired_bam_set <- function(tumor_bam,
   
   # check number of tumor and normal: should be same
   # if number of tumor/normal more than 1, is_merged should be FALSE
-  tumor_bam = sapply(tumor_bam, tools::file_path_as_absolute)
-  normal_bam = sapply(normal_bam, tools::file_path_as_absolute)
 
   sapply(sapply(tumor_bam, has_extension, "bam"), assert_that)
   sapply(sapply(normal_bam, has_extension, "bam"), assert_that)
