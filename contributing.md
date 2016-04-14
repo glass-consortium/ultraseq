@@ -10,7 +10,6 @@ We use the following overarching ideas for modules - enabling consistent return 
 
 
 1. **inputs**:
-
 A module function should accept minimum of **two inputs**, 
     - samplename (is used to append a column to the flowmat)
     - first argument, should preferably be an input file. For example fastq, bam etc. This really depends on the module. 
@@ -27,7 +26,6 @@ A module function should accept minimum of **two inputs**,
   ```
 
 2. **return**
-
 A module function should always return a list arguments:
     - **flowmat** (required)   : contains all the commands to run
     - **outfiles** (recommended): could be used as an input to other tools
@@ -37,7 +35,6 @@ A module function should always return a list arguments:
   ```
 
 3. **conf file**:
-
 Preferably, default values for all other arguments should be read from the `conf` file.
 For example a pipeline called `bam_mutect`, will have a conf file `bam_mutect.conf`, in the same folder. All params from that file would be read, and can be fetched using `opts_flow$get()`. For example `opts_flow$get('bwa_exe')`
 
