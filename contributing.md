@@ -1,68 +1,100 @@
 # Contributing
 
-Each file in the R folder represents a tool. In it we have a R function preferably of the same name, or a similar easy name.
+Each file in the ultraseq/R folder represents wrapper to a tool OR module. The file has a function by the same name, and return a set of commands to run the function. For example, `mutect.R`, has a function `mutect()`.
 
-These are some of the practices we follow in-house. We feel using these makes stitching custom pipelines using a set of modules quite easy. Consider this a check-list of a few ideas and a work in progress.
+Multiple modules, can be stitched together to form pipelines - a few examples are `pipelines/`. And a few experimental pipelines in `pipelines/extra`.
 
-## A note on module functions
+We use the following overarching ideas for modules - enabling consistent return expections, for each of them.
+
+## A few suggested specifications, for modules:
 
 
-1. should accept minimum of **two inputs**, 
-    - a input file etc, depends on the module. Flexible
+1. **inputs**:
+
+A module function should accept minimum of **two inputs**, 
     - samplename (is used to append a column to the flowmat)
+    - first argument, should preferably be an input file. For example fastq, bam etc. This really depends on the module. 
+    - A few example arguments could be (https://github.com/flow-r/ultraseq/blob/master/list_of_common_args.md)
   ```
-  x
   samplename = get_opts("samplename")
+  
+  # a few example inputs
+  bam
+  fqs
+  
+  tumor_bam
+  normal_bam
   ```
 
-2. should always return a list arguments:
+2. **return**
+
+A module function should always return a list arguments:
     - **flowmat** (required)   : contains all the commands to run
     - **outfiles** (recommended): could be used as an input to other tools
+
   ```
-  return(list(outfiles = mergedbam, flowmat = flowmat))
+  return(list(outfiles = bam, flowmat = flowmat))
   ```
 
-3. can define all other default arguments such as paths to tools etc. in a seperate conf (tab-delimited) file.
-  - Then use `get_opts("param")` to use their value.
+3. **conf file**:
+
+Preferably, default values for all other arguments should be read from the `conf` file.
+For example a pipeline called `bam_mutect`, will have a conf file `bam_mutect.conf`, in the same folder. All params from that file would be read, and can be fetched using `opts_flow$get()`. For example `opts_flow$get('bwa_exe')`
 
  ```
  ## Example conf file:
- cat my.conf
  bwa_exe	/apps/bwa/bin/bwa
  ```
 
-4. should use `check_args()` to make sure none of the default parameters are null. 
+4. **checks**
 
- ```{r}
- ## check_args(), checks ALL the arguments of the function, 
- ## and throws a error. use ?check_args for more details.
- get_opts("my_new_tool")
- ```
+To make sure all arguments have values, and none of them are NULL, a module should use `check_args()`.
+
+For example we have a function:
+
+```
+fastq_bwa <- function(..., bwa_exe = opts_flow$get("bwa_exe"){
+
+	# asserts, that none of the arguments are NULL
+	check_args()
+	# ignore a few:
+	check_args(ignore = "bwa_exe")
+.
+.
+.
+
+}
+
+```
 
 ## Example
 
+Let, use an example function `picard_merge` which merged bam files (`bams`), and creates a single `mergedbam`.
+
 ```{r picard_merge, echo=TRUE, comment=""}
-picard_merge <- function(x,
-        samplename = get_opts("samplename"),
+picard_merge <- function(bams,
+        samplename = opts_flow$get("samplename"),
         mergedbam,
-        java_exe = get_opts("java_exe"),
-        java_mem = get_opts("java_mem"),
-        java_tmp = get_opts("java_tmp"),
-        picard_jar = get_opts("picard_jar")){
+        java_exe = opts_flow$get("java_exe"),
+        java_mem = opts_flow$get("java_mem"),
+        java_tmp = opts_flow$get("java_tmp"),
+        picard_jar = opts_flow$get("picard_jar")){
 	
   ## Make sure all args have a value (not null)
-  ## If a variable was not defined in a conf. file get_opts, will return NULL
+  ## If a variable was not defined in a conf. file opts_flow$get, will return NULL
   check_args()  
   
+  # create a vector of bams
   bam_list = paste("INPUT=", x, sep = "", collapse = " ")
-  ## create a named list of commands
+  
+  # create a named list of commands
   cmds = list(merge = sprintf("%s %s -Djava.io.tmpdir=%s -jar %s MergeSamFiles %s OUTPUT=%s ASSUME_SORTED=TRUE VALIDATION_STRINGENCY=LENIENT CREATE_INDEX=true USE_THREADING=true",
   java_exe, java_mem, java_tmp, picard_jar, bam_list, mergedbam))
   
-  ## Create a flowmat
+  # Create a flowmat
   flowmat = to_flowmat(cmds, samplename)
   
-  ## return a list, flowmat AND outfiles
+  # return a list, flowmat AND outfiles
   return(list(outfiles = mergedbam, flowmat = flowmat))
 }
 ```
