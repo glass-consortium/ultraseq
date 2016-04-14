@@ -14,6 +14,7 @@ The idea is to create a framework addressing some of the following scenarios
 ```
 # install flowr
 Rscript -e 'install.packages("flowr")'
+Rscript -e 'library(flowr);flowr::setup()'
 
 git clone https://github.com/flow-r/ultraseq.git
 

@@ -1,27 +1,30 @@
 
-
+## Notes/tips
 
 Adding this to DRAT repo
 
-```{r}
-
+```
 # insert package
 pkg = devtools::build(".")
 out = drat::insertPackage(pkg, "~/Dropbox/public/github_drat", commit = TRUE)
 
 # push repo
 system("cd ~/Dropbox/public/github_drat;git push")
+```
 
+## using docker for testing:
 
+```
+docker pull sahilseth/r-devel
 ```
 
 
-## renaming ngsflows to ultraseq
+## Errors
+
+
+**renaming ngsflows to ultraseq**
 
 flowr run
-
-
-
 
 flowr run
 errors saying a patterns is required
