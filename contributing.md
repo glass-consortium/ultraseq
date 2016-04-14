@@ -1,6 +1,6 @@
 # Contributing
 
-Each file in the ultraseq/R folder represents wrapper to a tool OR module. The file has a function by the same name, and return a set of commands to run the function. For example, `mutect.R`, has a function `mutect()`.
+Each file in the `ultraseq/R` folder represents wrapper to a tool OR module. The file has a function by the same name, and return a set of commands to run the function. For example, `mutect.R`, has a function `mutect()`.
 
 Multiple modules, can be stitched together to form pipelines - a few examples are `pipelines/`. And a few experimental pipelines in `pipelines/extra`.
 
