@@ -15,7 +15,9 @@ conf            tab delimited configuration file
 wd              base directory used for this run
 execute         logical, controlling submission of this flow to the cluster
                 OR running on the local platform
-use 'flowr run -h' for more details on additional optional arguments.
+
+use 'flowr run -h' for more details and additional optional arguments.
+
 "
 
 # roxygen2:::parse_file("../pipelines/bam_mutect.R", as.environment("package:ultraseq"))
@@ -40,20 +42,26 @@ bam_mutect <- function(tumor_bam,
   help_text = "
 
 Usage:
-flowr run bam_mutect tumor_bam=tumor.bam normal_bam=normal.bam out_prefix=tumor_normal platform=local execute=FALSE
+flowr run [args for bam_mutect] [args for flowr::run]
+flowr run x=bam_mutect tumor_bam=tumor.bam normal_bam=normal.bam tumor_name=TCGA-00-ABCD-01 normal_name=TCGA-00-ABCD-10 out_prefix=tumor_normal platform=local execute=FALSE
+
 
 Required:
 tumor_bam       tumor bam file
 normal_bam      normal bam file
-out_prefix     output paired name
+out_prefix      output paired name
+tumor_bam       tumor sample ID
+normal_bam      normal sample ID
+
 "
   
   help_text = paste0(help_text, help_text_flowr_run)
   
-  check_args()
   
-  if(missing(tumor_bam))
+  if(missing(tumor_bam) | missing(normal_bam))
     stop(help_text)
+  
+  check_args()
   
   tumor_bam = sapply(tumor_bam, tools::file_path_as_absolute)
   normal_bam = sapply(normal_bam, tools::file_path_as_absolute)
