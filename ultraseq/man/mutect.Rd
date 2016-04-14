@@ -57,7 +57,7 @@ This generates a set of commandlines, per chromosome
 x = "tumor.bam"
 y = "normal.bam"
 
-out = mutect(x, y, is_merged = TRUE)
+out = mutect(x, y, samplename="tumor_normal", is_merged = TRUE)
 
 }
 }
