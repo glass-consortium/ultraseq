@@ -13,9 +13,9 @@ We use the following overarching ideas for modules - enabling consistent return 
 A module function should accept minimum of **two inputs**, 
     - samplename (is used to append a column to the flowmat)
     - first argument, should preferably be an input file. For example fastq, bam etc. This really depends on the module. 
-    - A few example arguments could be (https://github.com/flow-r/ultraseq/blob/master/list_of_common_args.md)
+    - One choose argument names from [list of common arguments](https://github.com/flow-r/ultraseq/blob/master/list_of_common_args.md) (under active development - the list will change!)
   ```
-  samplename = get_opts("samplename")
+  samplename = opts_flow$get("samplename")
   
   # a few example inputs
   bam
