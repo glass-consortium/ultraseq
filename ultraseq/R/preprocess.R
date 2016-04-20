@@ -64,6 +64,7 @@
 #' @param gatk_realign_opts 
 #' @param gatk_baserecalib_opts 
 #' @param gatk_printreads_opts 
+#' @param execute_cmds run commands, after creation. Useful for testing/debugging and running on local platforms.
 #' @export
 #'
 #' @examples \dontrun{
@@ -101,7 +102,11 @@ preprocess <- function(bam,
                        gatk_target_opts = opts_flow$get('gatk_target_opts'),
                        gatk_realign_opts = opts_flow$get('gatk_realign_opts'),
                        gatk_baserecalib_opts = opts_flow$get('gatk_baserecalib_opts'),
-                       gatk_printreads_opts = opts_flow$get('gatk_printreads_opts')){
+                       gatk_printreads_opts = opts_flow$get('gatk_printreads_opts'), 
+                       
+                       
+                       execute_cmds = FALSE
+                       ){
 
   check_args(ignore = "outfile")
   
@@ -152,6 +157,11 @@ preprocess <- function(bam,
                target = cmd_target, realign = cmd_realign,
                baserecalib = cmd_baserecalib, printreads = cmd_printreads)
   sapply(cmds, length)
+  
+  sapply(cmds, length)
+  
+  if(execute_cmds)
+    sapply(cmds, system)
   
   flowmat = to_flowmat(cmds, samplename = samplename)
   return(list(flowmat=flowmat, outfiles = recalibbams))

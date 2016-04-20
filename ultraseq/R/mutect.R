@@ -59,7 +59,9 @@ mutect <- function(tumor_bam,
                    
                    ref_fasta = opts_flow$get('ref_fasta'),
                    
-                   mutect_opts = opts_flow$get('mutect_opts')
+                   mutect_opts = opts_flow$get('mutect_opts'), 
+                   
+                   execute_cmds = FALSE
                    
 ){
   
@@ -92,6 +94,9 @@ mutect <- function(tumor_bam,
 
   cmds = c(cmds, mutect_merge = cmd_merge)
   
+  if(execute_cmds)
+    sapply(cmds, system)
+
   flowmat = to_flowmat(cmds, samplename = samplename)
   return(list(flowmat=flowmat, outfiles=list(all = mutects, merged = merged_mutect)))
   
