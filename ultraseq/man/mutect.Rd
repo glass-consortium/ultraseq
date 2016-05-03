@@ -12,7 +12,7 @@ mutect(tumor_bam, normal_bam, samplename = opts_flow$get("samplename"),
   cpu_mutect = opts_flow$get("cpu_mutect"),
   mem_mutect = opts_flow$get("java_mem"),
   ref_fasta = opts_flow$get("ref_fasta"),
-  mutect_opts = opts_flow$get("mutect_opts"))
+  mutect_opts = opts_flow$get("mutect_opts"), execute_cmds = FALSE)
 }
 \arguments{
 \item{tumor_bam}{path to a tumor bam file}

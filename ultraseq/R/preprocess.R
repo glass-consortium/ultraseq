@@ -82,7 +82,7 @@ preprocess <- function(bam,
                        java_tmp = opts_flow$get("java_tmp"),
 
                        gatk_jar = opts_flow$get('gatk_jar'),
-                       picard_dir = opts_flow$get('picard_dir'),
+                       picard_jar = opts_flow$get('picard_jar'),
                        samtools_exe = opts_flow$get('samtools_exe'),
 
                        cpu_markdup = 1,
@@ -119,8 +119,8 @@ preprocess <- function(bam,
   # ------------ dedup; SINGLE FILE
   dedupbam <- paste0(bamset$out_prefix, ".marked.bam")
   metricsfile <- paste0(bamset$out_prefix, ".marked.metrics")
-  cmd_markdup <- sprintf("%s %s -Djava.io.tmpdir=%s -jar %s/picard.jar MarkDuplicates INPUT=%s OUTPUT=%s METRICS_FILE=%s %s",
-                         java_exe, mem_markdup, java_tmp, picard_dir, bamset$bam,
+  cmd_markdup <- sprintf("%s %s -Djava.io.tmpdir=%s -jar %s MarkDuplicates INPUT=%s OUTPUT=%s METRICS_FILE=%s %s",
+                         java_exe, mem_markdup, java_tmp, picard_jar, bamset$bam,
                          dedupbam, metricsfile, 
                          picard_markdup_opts)
   cmd_markdup
