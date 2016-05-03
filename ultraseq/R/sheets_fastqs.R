@@ -144,7 +144,8 @@ create_fq_sheet <- function(x,
   ## if one needs to change the samplename to include anything in this
   fqmat$samplename = paste0(sample_prefix, fqmat$samplename)
   
-  return(fqmat)
+  
+  invisible(fqmat)
 }
 
 

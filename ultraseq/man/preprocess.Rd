@@ -9,7 +9,7 @@ preprocess(bam, outfile, samplename = opts_flow$get("samplename"),
   java_exe = opts_flow$get("java_exe"),
   java_tmp = opts_flow$get("java_tmp"),
   gatk_jar = opts_flow$get("gatk_jar"),
-  picard_dir = opts_flow$get("picard_dir"),
+  picard_jar = opts_flow$get("picard_jar"),
   samtools_exe = opts_flow$get("samtools_exe"), cpu_markdup = 1,
   mem_markdup = "-Xmx8g", cpu_target = opts_flow$get("cpu_target"),
   mem_target = "-Xmx32g", cpu_realign = opts_flow$get("cpu_realign"),
@@ -22,7 +22,8 @@ preprocess(bam, outfile, samplename = opts_flow$get("samplename"),
   gatk_target_opts = opts_flow$get("gatk_target_opts"),
   gatk_realign_opts = opts_flow$get("gatk_realign_opts"),
   gatk_baserecalib_opts = opts_flow$get("gatk_baserecalib_opts"),
-  gatk_printreads_opts = opts_flow$get("gatk_printreads_opts"))
+  gatk_printreads_opts = opts_flow$get("gatk_printreads_opts"),
+  execute_cmds = FALSE)
 }
 \arguments{
 \item{bam}{}
@@ -38,8 +39,6 @@ preprocess(bam, outfile, samplename = opts_flow$get("samplename"),
 \item{java_tmp}{path to java tmp, can leave blank}
 
 \item{gatk_jar}{}
-
-\item{picard_dir}{}
 
 \item{samtools_exe}{}
 
@@ -72,6 +71,10 @@ preprocess(bam, outfile, samplename = opts_flow$get("samplename"),
 \item{gatk_baserecalib_opts}{}
 
 \item{gatk_printreads_opts}{}
+
+\item{execute_cmds}{run commands, after creation. Useful for testing/debugging and running on local platforms.}
+
+\item{picard_dir}{}
 
 \item{bam}{}
 
