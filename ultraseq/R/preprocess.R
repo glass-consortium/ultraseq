@@ -86,15 +86,21 @@ preprocess <- function(bam,
                        samtools_exe = opts_flow$get('samtools_exe'),
 
                        cpu_markdup = 1,
-                       mem_markdup= "-Xmx8g",
+                       mem_markdup= opts_flow$get("mem_markdup"),
+                       
                        cpu_target = opts_flow$get("cpu_target"),  ## not used
-                       mem_target= "-Xmx32g",
+                       mem_target= opts_flow$get("mem_target"),
+
                        cpu_realign = opts_flow$get("cpu_realign"),
-                       mem_realign= "-Xmx4g", ## scatter 8 per node
+                       mem_realign= opts_flow$get("mem_realign"),
+
+                       ## scatter 8 per node nct=8
                        cpu_baserecalib = opts_flow$get("cpu_baserecalib"),
-                       mem_baserecalib= "-Xmx4g", ## scatter 8 per node nct=8
+                       mem_baserecalib = opts_flow$get("mem_baserecalib"),
+
+                       ## scatter 8 per node nct=8
                        cpu_printreads = opts_flow$get("cpu_printreads"),
-                       mem_printreads= "-Xmx4g", ## scatter 8 per node nct=8
+                       mem_printreads = opts_flow$get("mem_printreads"),
 
                        ref_fasta = opts_flow$get('ref_fasta'),
 
@@ -103,8 +109,7 @@ preprocess <- function(bam,
                        gatk_realign_opts = opts_flow$get('gatk_realign_opts'),
                        gatk_baserecalib_opts = opts_flow$get('gatk_baserecalib_opts'),
                        gatk_printreads_opts = opts_flow$get('gatk_printreads_opts'), 
-                       
-                       
+
                        execute_cmds = FALSE
                        ){
 
