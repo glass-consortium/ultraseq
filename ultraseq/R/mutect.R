@@ -89,8 +89,15 @@ mutect <- function(tumor_bam,
   # .filter='judgement==KEEP'
   # in case of a single file, this mean a read and write operation
   merged_mutect = paste0(pairedset$out_prefix, "_merged.mutect.tsv")
-  cmd_merge = sprintf("flowr ultraseq::merge_sheets x=%s outfile=%s",
+  cmd_merge1 = sprintf("flowr ultraseq::merge_sheets x=%s outfile=%s",
                       paste(mutects, collapse = ","), merged_mutect)
+  
+  # @sbamin, create a filtered file by default
+  merged_filt = paste0(pairedset$out_prefix, "_merged_keep.mutect.tsv")
+  cmd_merge2 = sprintf("flowr ultraseq::merge_sheets x=%s outfile=%s .filter='judgement==KEEP'",
+                      paste(mutects, collapse = ","), merged_filt)
+  cmd_merge = paste0(cmd_merge1, cmd_merge2, sep = ";")
+  
 
   cmds = c(cmds, mutect_merge = cmd_merge)
   

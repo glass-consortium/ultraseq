@@ -112,7 +112,7 @@ preprocess <- function(bam,
   
   bamset = bam_set(bam = bam, outfile = outfile, ref_fasta = ref_fasta, split_by_chr = split_by_chr)
 
-
+  # get the name of the function
   pipename = match.call()[[1]]
   message("Generating a ", pipename, " flowmat for sample: ", samplename)
 
@@ -158,8 +158,7 @@ preprocess <- function(bam,
                baserecalib = cmd_baserecalib, printreads = cmd_printreads)
   sapply(cmds, length)
   
-  sapply(cmds, length)
-  
+
   if(execute_cmds)
     sapply(cmds, system)
   

@@ -1,4 +1,4 @@
-#' Title
+#' merge tables by row, and filter rows
 #'
 #' @param fl a vector of files to be merged
 #' @param outfile path to the merged output file
