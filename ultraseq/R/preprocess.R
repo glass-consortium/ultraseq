@@ -86,10 +86,10 @@ preprocess <- function(bam,
                        samtools_exe = opts_flow$get('samtools_exe'),
 
                        cpu_markdup = 1,
-                       mem_markdup= opts_flow$get("mem_markdup"),
+                       mem_markdup = opts_flow$get("mem_markdup"),
                        
                        cpu_target = opts_flow$get("cpu_target"),  ## not used
-                       mem_target= opts_flow$get("mem_target"),
+                       mem_target = opts_flow$get("mem_target"),
 
                        cpu_realign = opts_flow$get("cpu_realign"),
                        mem_realign= opts_flow$get("mem_realign"),
@@ -198,8 +198,14 @@ get_bam_chrs <- function(x){
 get_fasta_chrs <- function(fa = opts_flow$get("ref_fasta"),
                            length = FALSE){
   check_args()
+  
   #dict = gsub("fasta$", "dict", x)
   dict = paste0(file_path_sans_ext(fa), ".dict")
+  
+  # use default chrs if they are already set
+  if(!is.null(opst_flow$get("ref_fasta_chrs")))
+    return(list(chrs = opts_flow$get("ref_fasta_chrs"), lens = NA))
+    
   if(!file.exists(dict)){
     message(c("We need a dictionary (extension: .dict) for the reference fasta file to proceed. ",
               "Follow this link to learn more: http://lmgtfy.com/?q=create+dict+fasta"))
@@ -215,6 +221,7 @@ get_fasta_chrs <- function(fa = opts_flow$get("ref_fasta"),
     # if(length)
     #   return(list(chrs = chrs, lens = lens))
   }
+  
   return(list(chrs = chrs, lens = lens))
 }
 
