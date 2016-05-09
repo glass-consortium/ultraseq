@@ -94,7 +94,7 @@ paired_bam_set <- function(tumor_bam,
                            out_prefix,
                            is_merged,
                            split_by_chr,
-                           ref_fasta = opts_flow$get('ref_fasta')
+                           ref_fasta_path = opts_flow$get('ref_fasta_path')
                            
 ){
   
@@ -136,10 +136,11 @@ paired_bam_set <- function(tumor_bam,
   else
     obj$out_prefix = out_prefix
   
-  tmp <- get_fasta_chrs(ref_fasta)
+  ## if file is available determine whether to split for faster processing
+  tmp <- get_fasta_chrs(ref_fasta_path)
   obj$chr_names = tmp$chrs
   obj$chr_lengths = tmp$lens
-  
+
   if(split_by_chr){
     obj$out_prefix_chr <- paste0(obj$out_prefix, "_", obj$chrs_names) # bam names
     obj$gatk_intervals = paste0(" -L ", obj$chr_names)             ## interval files
