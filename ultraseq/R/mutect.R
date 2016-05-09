@@ -96,7 +96,7 @@ mutect <- function(tumor_bam,
   merged_filt = paste0(pairedset$out_prefix, "_merged_keep.mutect.tsv")
   cmd_merge2 = sprintf("flowr ultraseq::merge_sheets x=%s outfile=%s .filter='judgement==KEEP'",
                       paste(mutects, collapse = ","), merged_filt)
-  cmd_merge = paste0(cmd_merge1, cmd_merge2, sep = ";")
+  cmd_merge = paste(cmd_merge1, cmd_merge2, sep = ";")
   
 
   cmds = c(cmds, mutect_merge = cmd_merge)
