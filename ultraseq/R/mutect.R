@@ -25,7 +25,7 @@ fq_set <- function(fq1, fq2){
 #' @param mutect_jar path to mutect's jar file
 #' @param cpu_mutect integer specifying number of thread to be used per mutect fork
 #' @param mem_mutect amount of memory to be used by mutect [-Xmx12g]
-#' @param ref_fasta path to the reference genome in fasta format
+#' @param ref_fasta_path path to the reference genome in fasta format
 #' @param mutect_opts additional arguments passed onto mutect
 #' 
 #' @return The function returns a flowmat with all the commands. 
@@ -57,7 +57,7 @@ mutect <- function(tumor_bam,
                    cpu_mutect = opts_flow$get('cpu_mutect'), ## curently not suported
                    mem_mutect = opts_flow$get("java_mem"),
                    
-                   ref_fasta = opts_flow$get('ref_fasta'),
+                   ref_fasta_path = opts_flow$get('ref_fasta_path'),
                    
                    mutect_opts = opts_flow$get('mutect_opts'), 
                    
@@ -80,7 +80,7 @@ mutect <- function(tumor_bam,
   lapply(list(tumor_bam, normal_bam, pairedset$out_prefix_chr, pairedset$chrs_names), length)
   
   cmd_mutect <- sprintf("%s %s -Djava.io.tmpdir=%s -jar %s --analysis_type MuTect --reference_sequence %s --input_file:tumor %s --input_file:normal %s --out %s  --coverage_file %s %s %s",
-                        java_exe, mem_mutect, java_tmp, mutect_jar, ref_fasta, 
+                        java_exe, mem_mutect, java_tmp, mutect_jar, ref_fasta_path, 
                         tumor_bam, normal_bam,
                         mutects, wigs,
                         mutect_opts, pairedset$gatk_intervals)
