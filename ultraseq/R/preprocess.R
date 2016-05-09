@@ -34,7 +34,7 @@
 #' @param mem_markdup 
 #' @param mem_target 
 #' @param cpu_realign 
-#' @param ref_fasta 
+#' @param ref_fasta_path 
 #' @param gatk_target_opts 
 #' @param gatk_realign_opts 
 #' @param gatk_baserecalib_opts 
@@ -47,7 +47,7 @@
 #' @param java_exe 
 #' @param java_tmp 
 #' @param gatk_jar_path 
-#' @param picard_dir 
+#' @param picard_jar_path
 #' @param samtools_exe 
 #' @param cpu_markdup 
 #' @param mem_markdup 
@@ -59,7 +59,7 @@
 #' @param mem_baserecalib 
 #' @param cpu_printreads 
 #' @param mem_printreads 
-#' @param ref_fasta 
+#' @param ref_fasta_path 
 #' @param gatk_target_opts 
 #' @param gatk_realign_opts 
 #' @param gatk_baserecalib_opts 
@@ -102,7 +102,7 @@ preprocess <- function(bam,
                        cpu_printreads = opts_flow$get("cpu_printreads"),
                        mem_printreads = opts_flow$get("mem_printreads"),
 
-                       ref_fasta = opts_flow$get('ref_fasta'),
+                       ref_fasta_path = opts_flow$get('ref_fasta_path'),
 
                        picard_markdup_opts = opts_flow$get('picard_markdup_opts'),
                        gatk_target_opts = opts_flow$get('gatk_target_opts'),
@@ -115,7 +115,7 @@ preprocess <- function(bam,
 
   check_args(ignore = "outfile")
   
-  bamset = bam_set(bam = bam, outfile = outfile, ref_fasta = ref_fasta, split_by_chr = split_by_chr)
+  bamset = bam_set(bam = bam, outfile = outfile, ref_fasta_path = ref_fasta_path, split_by_chr = split_by_chr)
 
   # get the name of the function
   pipename = match.call()[[1]]
@@ -134,12 +134,12 @@ preprocess <- function(bam,
   intervalsfiles <- paste0(bamset$out_prefix, ".realign.intervals")
   ## ------------ do this for all chrs
   cmd_target <- sprintf("%s %s -Djava.io.tmpdir=%s -jar %s -T RealignerTargetCreator -R %s -I %s -o %s -nt %s %s",
-                        java_exe, mem_target, java_tmp, gatk_jar_path, ref_fasta, dedupbam,
+                        java_exe, mem_target, java_tmp, gatk_jar_path, ref_fasta_path, dedupbam,
                         intervalsfiles, cpu_target, gatk_target_opts)
 
   realignedbams <- paste0(bamset$out_prefix_chr ,".realigned.bam")
   cmd_realign <- sprintf("%s %s -Djava.io.tmpdir=%s -jar %s -T IndelRealigner -R %s -I %s -targetIntervals %s -o %s %s %s",
-                         java_exe, mem_realign, java_tmp, gatk_jar_path, ref_fasta, dedupbam,
+                         java_exe, mem_realign, java_tmp, gatk_jar_path, ref_fasta_path, dedupbam,
                          intervalsfiles, realignedbams, gatk_realign_opts, bamset$gatk_intervals)
 
   ## ------------ base recalibration
@@ -147,12 +147,12 @@ preprocess <- function(bam,
   recalibbams <- paste0(bamset$out_prefix_chr, ".recalibed.bam")
   recalibtabfile <- paste0(bamset$out_prefix_chr, ".recalib.tab")
   cmd_baserecalib <- sprintf("%s %s -Djava.io.tmpdir=%s -jar %s -T BaseRecalibrator -R %s -I %s -o %s -nct %s %s %s",
-                             java_exe, mem_baserecalib, java_tmp, gatk_jar_path, ref_fasta,
+                             java_exe, mem_baserecalib, java_tmp, gatk_jar_path, ref_fasta_path,
                              realignedbams, recalibtabfile, cpu_baserecalib,
                              gatk_baserecalib_opts, bamset$gatk_intervals)
   
   cmd_printreads1 <- sprintf("%s %s -Djava.io.tmpdir=%s -jar %s -T PrintReads -R %s -I %s -BQSR %s -o %s -nct %s %s %s",
-                            java_exe, mem_printreads, java_tmp, gatk_jar_path, ref_fasta, realignedbams,
+                            java_exe, mem_printreads, java_tmp, gatk_jar_path, ref_fasta_path, realignedbams,
                             recalibtabfile, recalibbams, cpu_printreads,
                             gatk_printreads_opts, bamset$gatk_intervals)
   cmd_printreads2 <- sprintf("%s index %s", samtools_exe, recalibbams)
@@ -195,7 +195,7 @@ get_bam_chrs <- function(x){
 #' @importFrom params read_sheet
 #' @importFrom tools file_path_sans_ext
 #'
-get_fasta_chrs <- function(fa = opts_flow$get("ref_fasta"),
+get_fasta_chrs <- function(fa = opts_flow$get("ref_fasta_path"),
                            length = FALSE){
   check_args()
   

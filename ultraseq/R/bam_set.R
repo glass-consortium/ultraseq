@@ -1,4 +1,4 @@
-bam_set <- function(bam, outfile, ref_fasta, split_by_chr){
+bam_set <- function(bam, outfile, ref_fasta_path, split_by_chr){
   
   obj = list()
   
@@ -14,7 +14,7 @@ bam_set <- function(bam, outfile, ref_fasta, split_by_chr){
     obj$out_prefix <- gsub(".bam", "", basename(outfile))
   
   ## if file is available determine whether to split for faster processing
-  tmp <- get_fasta_chrs(ref_fasta)
+  tmp <- get_fasta_chrs(ref_fasta_path)
   obj$chr_names = tmp$chrs
   obj$chr_lengths = tmp$lens
   
