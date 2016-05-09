@@ -2,7 +2,7 @@
 % Please edit documentation in R/merge_sheets.R
 \name{merge_sheets}
 \alias{merge_sheets}
-\title{Title}
+\title{merge tables by row, and filter rows}
 \usage{
 merge_sheets(x, outfile, .filter = NA, ...)
 }
@@ -12,6 +12,6 @@ merge_sheets(x, outfile, .filter = NA, ...)
 \item{fl}{a vector of files to be merged}
 }
 \description{
-Title
+merge tables by row, and filter rows
 }
 

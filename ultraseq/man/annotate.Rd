@@ -6,7 +6,7 @@
 \usage{
 annotate(files, samplename = opts_flow$get("samplename"), outfile,
   build = "hg19", annovar_dir = opts_flow$get("annovar_dir"),
-  annotate_func = "ngsflows::annotate_mutect")
+  annotate_func = "ultraseq::annotate_mutect")
 }
 \arguments{
 \item{samplename}{name of the sample, to be added to the flowmat}

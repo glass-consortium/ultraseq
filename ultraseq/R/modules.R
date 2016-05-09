@@ -63,7 +63,7 @@ parse_rd <- function (x, ...){
   out
 }
 
-#' Show a list of all available modules in NGSFlows
+#' Show a list of all available modules in ultraseq
 #'
 #' @param pkg
 #' @param show
@@ -72,7 +72,7 @@ parse_rd <- function (x, ...){
 #'
 #' @examples
 #' modules()
-modules <- function(pkg = "ngsflows", show = TRUE){
+modules <- function(pkg = "ultraseq", show = TRUE){
   
   funcs = ls(paste0('package:', pkg))
 

@@ -22,8 +22,8 @@ if(FALSE){
   x = "/scratch/genomic_med/mtang1/scratch/results/TCGA-02-2485-10A-01D-1494-08/TCGA-02-2485-10A-01D-1494-08.bam"
   y = "/scratch/genomic_med/mtang1/scratch/results/TCGA-02-2485-01A-01D-1494-08/TCGA-02-2485-01A-01D-1494-08.bam"
 
-  library(ngsflows)
-  out = ngsflows:::freebayes(x, y, samplename = "TCGA-02-2485-01A-01D-1494-08")
+  library(ultraseq)
+  out = ultraseq:::freebayes(x, y, samplename = "TCGA-02-2485-01A-01D-1494-08")
   out$cmd[24]
   #somatic_filter_exe = "~/Dropbox/public/github_ngsflows/inst/scripts/somatic_filter.sh")
 
@@ -40,7 +40,7 @@ freebayes <- function(tumor_bam,
                       freebayes_exe = opts_flow$get("freebayes_exe"),
                       freebayes_opts = opts_flow$get("freebayes_opts"),
 
-                      somatic_filter_exe = system.file("scripts/somatic_filter.sh", package = "ngsflows")
+                      somatic_filter_exe = system.file("scripts/somatic_filter.sh", package = "ultraseq")
 ){
 
   if(missing(outfile))

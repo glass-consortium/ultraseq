@@ -2,15 +2,15 @@
 % Please edit documentation in R/modules.R
 \name{modules}
 \alias{modules}
-\title{Show a list of all available modules in NGSFlows}
+\title{Show a list of all available modules in ultraseq}
 \usage{
-modules(pkg = "ngsflows", show = TRUE)
+modules(pkg = "ultraseq", show = TRUE)
 }
 \arguments{
 \item{show}{}
 }
 \description{
-Show a list of all available modules in NGSFlows
+Show a list of all available modules in ultraseq
 }
 \examples{
 modules()

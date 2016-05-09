@@ -5,7 +5,7 @@
 \title{Title}
 \usage{
 paired_bam_set(tumor_bam, normal_bam, out_prefix, is_merged, split_by_chr,
-  ref_fasta = opts_flow$get("ref_fasta"))
+  ref_fasta_path = opts_flow$get("ref_fasta_path"))
 }
 \arguments{
 \item{tumor_bam}{}

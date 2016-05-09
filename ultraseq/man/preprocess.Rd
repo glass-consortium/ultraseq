@@ -8,16 +8,19 @@ preprocess(bam, outfile, samplename = opts_flow$get("samplename"),
   split_by_chr = opts_flow$get("split_by_chr"),
   java_exe = opts_flow$get("java_exe"),
   java_tmp = opts_flow$get("java_tmp"),
-  gatk_jar = opts_flow$get("gatk_jar"),
-  picard_jar = opts_flow$get("picard_jar"),
+  gatk_jar_path = opts_flow$get("gatk_jar_path"),
+  picard_jar_path = opts_flow$get("picard_jar_path"),
   samtools_exe = opts_flow$get("samtools_exe"), cpu_markdup = 1,
-  mem_markdup = "-Xmx8g", cpu_target = opts_flow$get("cpu_target"),
-  mem_target = "-Xmx32g", cpu_realign = opts_flow$get("cpu_realign"),
-  mem_realign = "-Xmx4g",
+  mem_markdup = opts_flow$get("mem_markdup"),
+  cpu_target = opts_flow$get("cpu_target"),
+  mem_target = opts_flow$get("mem_target"),
+  cpu_realign = opts_flow$get("cpu_realign"),
+  mem_realign = opts_flow$get("mem_realign"),
   cpu_baserecalib = opts_flow$get("cpu_baserecalib"),
-  mem_baserecalib = "-Xmx4g",
+  mem_baserecalib = opts_flow$get("mem_baserecalib"),
   cpu_printreads = opts_flow$get("cpu_printreads"),
-  mem_printreads = "-Xmx4g", ref_fasta = opts_flow$get("ref_fasta"),
+  mem_printreads = opts_flow$get("mem_printreads"),
+  ref_fasta_path = opts_flow$get("ref_fasta_path"),
   picard_markdup_opts = opts_flow$get("picard_markdup_opts"),
   gatk_target_opts = opts_flow$get("gatk_target_opts"),
   gatk_realign_opts = opts_flow$get("gatk_realign_opts"),
@@ -38,7 +41,7 @@ preprocess(bam, outfile, samplename = opts_flow$get("samplename"),
 
 \item{java_tmp}{path to java tmp, can leave blank}
 
-\item{gatk_jar}{}
+\item{gatk_jar_path}{}
 
 \item{samtools_exe}{}
 
@@ -62,7 +65,7 @@ preprocess(bam, outfile, samplename = opts_flow$get("samplename"),
 
 \item{mem_printreads}{}
 
-\item{ref_fasta}{}
+\item{ref_fasta_path}{}
 
 \item{gatk_target_opts}{}
 
@@ -88,9 +91,7 @@ preprocess(bam, outfile, samplename = opts_flow$get("samplename"),
 
 \item{java_tmp}{}
 
-\item{gatk_jar}{}
-
-\item{picard_dir}{}
+\item{gatk_jar_path}{}
 
 \item{samtools_exe}{}
 
@@ -104,7 +105,7 @@ preprocess(bam, outfile, samplename = opts_flow$get("samplename"),
 
 \item{cpu_realign}{}
 
-\item{ref_fasta}{}
+\item{ref_fasta_path}{}
 
 \item{gatk_target_opts}{}
 
