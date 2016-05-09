@@ -28,7 +28,7 @@
 #' @param bam 
 #' @param samplename 
 #' @param split_by_chr 
-#' @param gatk_jar 
+#' @param gatk_jar_path 
 #' @param picard_dir 
 #' @param samtools_exe 
 #' @param mem_markdup 
@@ -46,7 +46,7 @@
 #' @param split_by_chr 
 #' @param java_exe 
 #' @param java_tmp 
-#' @param gatk_jar 
+#' @param gatk_jar_path 
 #' @param picard_dir 
 #' @param samtools_exe 
 #' @param cpu_markdup 
@@ -81,8 +81,8 @@ preprocess <- function(bam,
                        java_exe = opts_flow$get("java_exe"),
                        java_tmp = opts_flow$get("java_tmp"),
 
-                       gatk_jar = opts_flow$get('gatk_jar'),
-                       picard_jar = opts_flow$get('picard_jar'),
+                       gatk_jar_path = opts_flow$get('gatk_jar_path'),
+                       picard_jar_path = opts_flow$get('picard_jar_path'),
                        samtools_exe = opts_flow$get('samtools_exe'),
 
                        cpu_markdup = 1,
@@ -125,7 +125,7 @@ preprocess <- function(bam,
   dedupbam <- paste0(bamset$out_prefix, ".marked.bam")
   metricsfile <- paste0(bamset$out_prefix, ".marked.metrics")
   cmd_markdup <- sprintf("%s %s -Djava.io.tmpdir=%s -jar %s MarkDuplicates INPUT=%s OUTPUT=%s METRICS_FILE=%s %s",
-                         java_exe, mem_markdup, java_tmp, picard_jar, bamset$bam,
+                         java_exe, mem_markdup, java_tmp, picard_jar_path, bamset$bam,
                          dedupbam, metricsfile, 
                          picard_markdup_opts)
   cmd_markdup
@@ -134,12 +134,12 @@ preprocess <- function(bam,
   intervalsfiles <- paste0(bamset$out_prefix, ".realign.intervals")
   ## ------------ do this for all chrs
   cmd_target <- sprintf("%s %s -Djava.io.tmpdir=%s -jar %s -T RealignerTargetCreator -R %s -I %s -o %s -nt %s %s",
-                        java_exe, mem_target, java_tmp, gatk_jar, ref_fasta, dedupbam,
+                        java_exe, mem_target, java_tmp, gatk_jar_path, ref_fasta, dedupbam,
                         intervalsfiles, cpu_target, gatk_target_opts)
 
   realignedbams <- paste0(bamset$out_prefix_chr ,".realigned.bam")
   cmd_realign <- sprintf("%s %s -Djava.io.tmpdir=%s -jar %s -T IndelRealigner -R %s -I %s -targetIntervals %s -o %s %s %s",
-                         java_exe, mem_realign, java_tmp, gatk_jar, ref_fasta, dedupbam,
+                         java_exe, mem_realign, java_tmp, gatk_jar_path, ref_fasta, dedupbam,
                          intervalsfiles, realignedbams, gatk_realign_opts, bamset$gatk_intervals)
 
   ## ------------ base recalibration
@@ -147,12 +147,12 @@ preprocess <- function(bam,
   recalibbams <- paste0(bamset$out_prefix_chr, ".recalibed.bam")
   recalibtabfile <- paste0(bamset$out_prefix_chr, ".recalib.tab")
   cmd_baserecalib <- sprintf("%s %s -Djava.io.tmpdir=%s -jar %s -T BaseRecalibrator -R %s -I %s -o %s -nct %s %s %s",
-                             java_exe, mem_baserecalib, java_tmp, gatk_jar, ref_fasta,
+                             java_exe, mem_baserecalib, java_tmp, gatk_jar_path, ref_fasta,
                              realignedbams, recalibtabfile, cpu_baserecalib,
                              gatk_baserecalib_opts, bamset$gatk_intervals)
   
   cmd_printreads1 <- sprintf("%s %s -Djava.io.tmpdir=%s -jar %s -T PrintReads -R %s -I %s -BQSR %s -o %s -nct %s %s %s",
-                            java_exe, mem_printreads, java_tmp, gatk_jar, ref_fasta, realignedbams,
+                            java_exe, mem_printreads, java_tmp, gatk_jar_path, ref_fasta, realignedbams,
                             recalibtabfile, recalibbams, cpu_printreads,
                             gatk_printreads_opts, bamset$gatk_intervals)
   cmd_printreads2 <- sprintf("%s index %s", samtools_exe, recalibbams)
