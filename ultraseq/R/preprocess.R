@@ -203,7 +203,7 @@ get_fasta_chrs <- function(fa = opts_flow$get("ref_fasta"),
   dict = paste0(file_path_sans_ext(fa), ".dict")
   
   # use default chrs if they are already set
-  if(!is.null(opst_flow$get("ref_fasta_chrs")))
+  if(!is.null(opts_flow$get("ref_fasta_chrs")))
     return(list(chrs = opts_flow$get("ref_fasta_chrs"), lens = NA))
     
   if(!file.exists(dict)){
