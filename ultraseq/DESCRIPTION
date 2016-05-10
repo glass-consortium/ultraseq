@@ -15,7 +15,6 @@ Depends:
 Imports:
     dplyr,
 Suggests:
-    Rsamtools,
     testthat
 Description: Provides a host of modules and pipelines supporting a host of
     genomics data ranging from whole genome/exome sequencing, RNA-Seq and chipseq
