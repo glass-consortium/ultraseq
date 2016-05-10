@@ -5,21 +5,23 @@ language: c
 sudo: required
 
 # travis is really building the pacakge
-before_script: 
-  - cd ultraseq
 
 before_install:
+  - cd ultraseq
   - curl -OL https://raw.githubusercontent.com/metacran/r-builder/master/pkg-build.sh
   - chmod 755 pkg-build.sh
   - ./pkg-build.sh bootstrap
 
 install:
+  - cd ultraseq
   - ./pkg-build.sh install_deps
 
 script:
+  - cd ultraseq
   - ./pkg-build.sh run_tests
 
 after_failure:
+  - cd ultraseq
   - ./pkg-build.sh dump_logs
 
 notifications:
