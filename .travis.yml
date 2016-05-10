@@ -13,15 +13,12 @@ before_install:
   - ./pkg-build.sh bootstrap
 
 install:
-  - cd ultraseq
   - ./pkg-build.sh install_deps
 
 script:
-  - cd ultraseq
   - ./pkg-build.sh run_tests
 
 after_failure:
-  - cd ultraseq
   - ./pkg-build.sh dump_logs
 
 notifications:
