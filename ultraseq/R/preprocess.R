@@ -221,6 +221,7 @@ get_fasta_chrs <- function(fa = opts_flow$get("ref_fasta_path"),
 }
 
 # using Rsamtools
+#' @import Rsamtools
 get_bam_chrs <- function(x){
   if(file.exists(x)){
     out = Rsamtools::scanBamHeader(x)
