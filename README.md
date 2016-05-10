@@ -1,7 +1,7 @@
 
 # Ultraseq
 
-+![](https://travis-ci.org/flow-r/ultraseq.svg?branch=master)
+![](https://travis-ci.org/flow-r/ultraseq.svg?branch=master)
 
 ## Pipelines and the R package are still under active development
 
