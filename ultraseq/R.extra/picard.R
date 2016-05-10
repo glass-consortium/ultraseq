@@ -144,7 +144,7 @@ picard_bam_fastq <- function(bam,
   return(list(flowmat = flowmat, outfiles = fqs))
 }
 
-#' Use picard's MergeSamFiles tool to merge bam/sam files
+#' Use picard's reorder bam file
 #'
 #' @description
 #' The resulting file is sorted and index is created for it.

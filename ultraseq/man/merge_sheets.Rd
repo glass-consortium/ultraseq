@@ -7,11 +7,22 @@
 merge_sheets(x, outfile, .filter = NA, ...)
 }
 \arguments{
+\item{x}{a character vector of file to be merged}
+
 \item{outfile}{path to the merged output file}
 
-\item{fl}{a vector of files to be merged}
+\item{.filter}{a filter string}
+
+\item{...}{other arguments supplied to params::read_sheet}
 }
 \description{
 merge tables by row, and filter rows
+}
+\examples{
+\dontrun{
+merge_sheets(c("mutect.chr1.txt", "mutect.chr2.txt"), 
+   outfile = "mutect.merged.txt", .filter = "judgement==KEEP")
+}
+
 }
 

@@ -31,6 +31,8 @@ fq_set <- function(fq1, fq2){
 #' @return The function returns a flowmat with all the commands. 
 #' The final file is called \code{'out_prefix'_merged.mutect.tsv}.
 #'
+#' @importFrom flowr check_args to_flowmat
+#' 
 #' @export
 #'
 #' @examples \dontrun{
@@ -59,10 +61,9 @@ mutect <- function(tumor_bam,
                    
                    ref_fasta_path = opts_flow$get('ref_fasta_path'),
                    
-                   mutect_opts = opts_flow$get('mutect_opts'), 
+                   mutect_opts = opts_flow$get('mutect_opts')
                    
-                   execute_cmds = FALSE
-                   
+
 ){
   
   pairedset = paired_bam_set(tumor_bam = tumor_bam, normal_bam = normal_bam, 
@@ -101,8 +102,7 @@ mutect <- function(tumor_bam,
 
   cmds = c(cmds, mutect_merge = cmd_merge)
   
-  if(execute_cmds)
-    sapply(cmds, system)
+  #if(execute_cmds) sapply(cmds, system)
 
   flowmat = to_flowmat(cmds, samplename = samplename)
   return(list(flowmat=flowmat, outfiles=list(all = mutects, merged = merged_mutect)))

@@ -21,55 +21,48 @@
 #' Some GATK tools use \href{https://www.broadinstitute.org/gatk/guide/article?id=1975}{CPU threads while others use data threads},
 #' flowr tries to use efficiently make the best use of both/either depending on tool's compatibility.
 #'
+#' @param bam bam file path
+#' @param samplename name of the sample
+#' @param outfile output file name
+#' 
 #' @param java_exe path to java
 #' @param java_tmp path to java tmp, can leave blank
+#' 
+#' @param split_by_chr split processing by chromosomr where ever possible
+#' 
+#' @param gatk_jar_path path to gatk jar file
+#' @param picard_jar_path path to picard jar file
+#' @param samtools_exe path to samtools
+#' 
+#' @param ref_fasta_path reference fasta file
+#' 
+#' @param picard_markdup_opts a character vector of options for picard mark duplication step
+#' @param gatk_target_opts a character vector of options for gatk target step
+#' @param gatk_realign_opts a character vector of options for gatk realign step
+#' @param gatk_baserecalib_opts a character vector of options for gatk baserecalib step
+#' @param gatk_printreads_opts a character vector of options for gatk printreads step
+#' 
+#' 
+#' @param mem_markdup memory used by java, example -Xmx1g
+#' @param mem_target memory used by java, example -Xmx1g
+#' @param mem_realign memory used by java, example -Xmx1g
+#' @param mem_baserecalib memory used by java, example -Xmx1g
+#' @param mem_printreads memory used by java, example -Xmx1g
+#' 
+#' 
 #' @param cpu_markdup not used.
 #' @param cpu_target number of threads used for GATK target creation step
-#' @param bam 
-#' @param samplename 
-#' @param split_by_chr 
-#' @param gatk_jar_path 
-#' @param picard_dir 
-#' @param samtools_exe 
-#' @param mem_markdup 
-#' @param mem_target 
-#' @param cpu_realign 
-#' @param ref_fasta_path 
-#' @param gatk_target_opts 
-#' @param gatk_realign_opts 
-#' @param gatk_baserecalib_opts 
-#' @param gatk_printreads_opts 
-#' @param outfile 
-#' @param bam 
-#' @param outfile 
-#' @param samplename 
-#' @param split_by_chr 
-#' @param java_exe 
-#' @param java_tmp 
-#' @param gatk_jar_path 
-#' @param picard_jar_path
-#' @param samtools_exe 
-#' @param cpu_markdup 
-#' @param mem_markdup 
-#' @param cpu_target 
-#' @param mem_target 
-#' @param cpu_realign 
-#' @param mem_realign 
-#' @param cpu_baserecalib 
-#' @param mem_baserecalib 
-#' @param cpu_printreads 
-#' @param mem_printreads 
-#' @param ref_fasta_path 
-#' @param gatk_target_opts 
-#' @param gatk_realign_opts 
-#' @param gatk_baserecalib_opts 
-#' @param gatk_printreads_opts 
+#' @param cpu_realign number of cpu used
+#' @param cpu_baserecalib number of cpu used
+#' @param cpu_printreads number of cpu used
+#' 
 #' @param execute_cmds run commands, after creation. Useful for testing/debugging and running on local platforms.
+#'
 #' @export
 #'
 #' @examples \dontrun{
 #' ## load options, including paths to tools and other parameters
-#' load_opts(fetch_conf("ngsflows.conf"), check = FALSE)
+#' opts_flow$load(flowr::fetch_conf("ultraseq.conf"), check = FALSE)
 #' out = preprocess("my_wex.bam", samplename = "samp", split_by_chr = TRUE)
 #'
 #' }
@@ -172,17 +165,7 @@ preprocess <- function(bam,
 
 }
 
-#' @export
-get_bam_chrs <- function(x){
-  if(file.exists(x)){
-    out = Rsamtools::scanBamHeader(x)
-    chrs = names(out[[1]]$targets)
-  }else{
-    message("bam does not exists, returning hg19 chrs")
-    chrs = c(1:22,"X","Y","MT")
-  }
-  return(chrs)
-}
+
 
 
 #' Read the associated dictionary file and return a list of chromosome names
@@ -214,7 +197,7 @@ get_fasta_chrs <- function(fa = opts_flow$get("ref_fasta_path"),
     lens = rep(NA, length(chrs))
 
   }else{
-    seqs = read_sheet(dict, ext = "tsv", skip = 1, head = FALSE)
+    seqs = read_sheet(dict, ext = "tsv", skip = 1, header = FALSE)
     chrs = gsub("SN:", "", seqs[, 2], fixed = TRUE)
     lens = gsub("LN:", "", seqs[, 3], fixed = TRUE)
     # 
@@ -225,6 +208,7 @@ get_fasta_chrs <- function(fa = opts_flow$get("ref_fasta_path"),
   return(list(chrs = chrs, lens = lens))
 }
 
+# using samtools
 .get_bam_chrs <- function(bam, samtools_exe = "samtools") {
   cmd <- sprintf("%s view -H %s | grep  '\\@SQ' | cut -f 2,3",
                  samtools_exe, bam)
@@ -234,4 +218,16 @@ get_fasta_chrs <- function(fa = opts_flow$get("ref_fasta_path"),
     y[c(2,4)]
   }))
   return (chrs_info)
+}
+
+# using Rsamtools
+get_bam_chrs <- function(x){
+  if(file.exists(x)){
+    out = Rsamtools::scanBamHeader(x)
+    chrs = names(out[[1]]$targets)
+  }else{
+    message("bam does not exists, returning hg19 chrs")
+    chrs = c(1:22,"X","Y","MT")
+  }
+  return(chrs)
 }

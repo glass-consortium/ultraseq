@@ -7,6 +7,11 @@
 split_names_fastq2(x,
   format = "{{samplename}}_{{index}}_L00{{lane}}_R{{read}}_{{num}}.fastq.gz")
 }
+\arguments{
+\item{x}{a fastq file}
+
+\item{format}{naming format for the file}
+}
 \description{
 split_names_fastq2
 }

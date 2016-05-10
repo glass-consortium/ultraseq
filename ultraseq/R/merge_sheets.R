@@ -1,9 +1,20 @@
 #' merge tables by row, and filter rows
 #'
-#' @param fl a vector of files to be merged
+#' @param x a character vector of file to be merged
 #' @param outfile path to the merged output file
+#' @param .filter a filter string
+#' @param ... other arguments supplied to params::read_sheet
+#' 
+#' @importFrom dplyr bind_rows
+#' @importFrom params write_sheet
 #'
 #' @export
+#' 
+#' @examples \dontrun{
+#' merge_sheets(c("mutect.chr1.txt", "mutect.chr2.txt"), 
+#'    outfile = "mutect.merged.txt", .filter = "judgement==KEEP")
+#' }
+#' 
 merge_sheets <- function(x, outfile, .filter = NA, ...){
   tmp <- lapply(x, function(fl){
     message(".", appendLF = FALSE)

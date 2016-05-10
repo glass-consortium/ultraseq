@@ -57,37 +57,17 @@ bam_set <- function(bam, outfile, ref_fasta_path, split_by_chr){
 
 
 # this is shared, by ALL callers
-#' Title
+#' Create a single object, to be used by multiple modules
 #'
-#' @param tumor_bam 
-#' @param normal_bam 
-#' @param out_prefix 
-#' @param is_merged 
-#' @param split_by_chr 
-#' 
-#' @details
-#' 
-#' \code{
-#' # single: tumor/normal
-#'   |__: can create a out-prefix
-#'
-#' multiple: tumor/normal
-#'   |__: assumed one for each chr.
-#'   |__: length   -  of both files should be same
-#'   |__: sequence -  of files and those of chrs, is assumed to be the same
-#'   |__: length of chr and tumor normal files should be the same
-#'   | 
-#'   |__: DICT is available. 
-#'   |__: length and sequence of dict, is assumed (lexicographically sorted)
-#'   |__: 
-#'   |__: 
-#'   |__: 
-#' create a definitive out prefix
-#' samplename, may not always be unique, using bams is better
-#' determine output file name, if out_prefix is not provided
-#' }
+#' @param tumor_bam tumor bam file
+#' @param normal_bam normal bam file
+#' @param out_prefix output prefix for paired sample analysis, example tumorname___normalname
+#' @param is_merged are bam files merged - single bam file for all chromosomes [TRUE/FALSE]
+#' @param split_by_chr should downstream analysis be split by chr.
+#' @param ref_fasta_path path to reference fasta file
 #' 
 #' @import assertthat
+#' @import flowr
 #'
 paired_bam_set <- function(tumor_bam, 
                            normal_bam,

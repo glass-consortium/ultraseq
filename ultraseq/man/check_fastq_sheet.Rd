@@ -9,6 +9,12 @@ check_fastq_sheet(x, id_column = "samplename", file_column = "file",
 }
 \arguments{
 \item{x}{a data.frame with details regarding fastq files}
+
+\item{id_column}{All rows, where this column is NA will be removed.}
+
+\item{file_column}{column name for fastq files}
+
+\item{read_column}{column name for read}
 }
 \description{
 Checks the nuber of samples, and that number of files in each sample should be
