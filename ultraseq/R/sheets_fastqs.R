@@ -7,16 +7,16 @@
 
 detect_fq_format2 <- function(x){
   
-  if(grepl(".*_([ATGC]*|NoIndex).*L00([0-9]*)_R([0-9]*)_([0-9]*).fastq.gz",basename(x[1]))){
+  if(grepl(".*_([ATGC]*|NoIndex)_L00([0-9]*)_R([0-9]*)_([0-9]*).fastq.gz",basename(x[1]))){
     
     message("Using CASAVA 1.8 naming format")
     format <- "{{samplename}}_{{index}}_L00{{lane}}_R{{read}}_{{num}}.fastq.gz"
     
   # if any of them as have S1 in their names
   # need a better detection system
-  }else if(any(grepl("_S1.*fastq.gz", x))){ 
+  }else if(grepl(".*_S[0-9]*_L00([0-9]*)_R([0-9]*)_([0-9]*).fastq.gz", basename(x[1]))){ 
     # miseq output
-    message("Using MiSeq/bcl2fastq (HiSeq3000) naming format")
+    message("Using MiSeq/bcl2fastq 2.0 naming format")
     format <- "{{samplename}}_S[0-9]*_L00{{lane}}_[RI]{{read}}_{{num}}.fastq.gz"
     
   }else{
@@ -31,7 +31,6 @@ detect_fq_format2 <- function(x){
 #' @param x a fastq file
 #' @param format naming format for the file
 #'
-#' @importFrom flowr whisker_render
 split_names_fastq2 <- function(x, format = "{{samplename}}_{{index}}_L00{{lane}}_R{{read}}_{{num}}.fastq.gz"){
   
   ## --- regex pattern for each piece
@@ -124,8 +123,6 @@ options(
 #' @param ext extensions to look for. A regex to search for fastq files
 #' @param format auto detect. Pattern specify pattern acceptable to split_fastq_names. If missing will detect hiseq and miseq
 #' @param sample_prefix A prefix to add to all sample names, run, project etc.....
-#' 
-#' @importFrom flowr opts_flow
 #' 
 #' @export
 create_fq_sheet <- function(x,

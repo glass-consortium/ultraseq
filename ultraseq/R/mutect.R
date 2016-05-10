@@ -31,7 +31,7 @@ fq_set <- function(fq1, fq2){
 #' @return The function returns a flowmat with all the commands. 
 #' The final file is called \code{'out_prefix'_merged.mutect.tsv}.
 #'
-#' @importFrom flowr check_args to_flowmat
+#' @import flowr
 #' 
 #' @export
 #'

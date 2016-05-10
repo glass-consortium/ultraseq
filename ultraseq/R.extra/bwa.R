@@ -94,7 +94,6 @@ attr(bwa, "type", "module" )
 
 #' @rdname bwa
 #' @export
-#' @importFrom flowr check_args opts_flow to_flowmat
 bwa.backtrack <- function(
   
   fqs1, 
