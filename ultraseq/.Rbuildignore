@@ -1,3 +1,15 @@
 ^.*\.Rproj$
 ^\.Rproj\.user$
 contributing.md
+
+
+# extra scripts 
+R.extra/*
+
+# extra data
+inst/testdata
+
+
+# extra doc file
+README.Rmd
+README.html

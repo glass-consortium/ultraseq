@@ -1,4 +1,4 @@
 
 
 # by default using the internal fasta functions
-opts_flow$get(ref_fasta = NULL)
+#opts_flow$get(ref_fasta_path = NULL)

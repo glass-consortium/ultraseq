@@ -109,7 +109,8 @@ format_vcf_info_ion <- function(x){
 #'
 parse_somatic_vcf <- function(x, samp, ref){
   message("Reading file...")
-  mat = IACSUtil:::readVCF(x)
+  # add a read_vcf function
+  #mat = IACSUtil:::readVCF(x)
   mat = tbl_df(as.data.frame(mat,  stringsAsFactors = FALSE))
   colnames(mat) = tolower(colnames(mat))
   ## assume first column
@@ -134,7 +135,7 @@ parse_somatic_vcf <- function(x, samp, ref){
 
 if(FALSE){
 
-  source('~/Dropbox/public/github_ngsflows/R/parse_vcfs.R')
+  source('~/Dropbox/public/flow-r/ultraseq/ultraseq/R/parse_vcfs.R')
   x='/rsrch2/iacs/iacs_dep/sseth/flowr/runs/flowr_test/fastq_haplotyper-MS132-20150824-16-37-58-XScJT0OZ/tmp/GLizee-Pancreatic-MS132-MP013normalDNA.recalibed_1.haplotyper.vcf'
   x2 = parse_vcf(x)
 

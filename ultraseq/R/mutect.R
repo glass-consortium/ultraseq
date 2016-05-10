@@ -25,12 +25,14 @@ fq_set <- function(fq1, fq2){
 #' @param mutect_jar path to mutect's jar file
 #' @param cpu_mutect integer specifying number of thread to be used per mutect fork
 #' @param mem_mutect amount of memory to be used by mutect [-Xmx12g]
-#' @param ref_fasta path to the reference genome in fasta format
+#' @param ref_fasta_path path to the reference genome in fasta format
 #' @param mutect_opts additional arguments passed onto mutect
 #' 
 #' @return The function returns a flowmat with all the commands. 
 #' The final file is called \code{'out_prefix'_merged.mutect.tsv}.
 #'
+#' @import flowr
+#' 
 #' @export
 #'
 #' @examples \dontrun{
@@ -57,12 +59,11 @@ mutect <- function(tumor_bam,
                    cpu_mutect = opts_flow$get('cpu_mutect'), ## curently not suported
                    mem_mutect = opts_flow$get("java_mem"),
                    
-                   ref_fasta = opts_flow$get('ref_fasta'),
+                   ref_fasta_path = opts_flow$get('ref_fasta_path'),
                    
-                   mutect_opts = opts_flow$get('mutect_opts'), 
+                   mutect_opts = opts_flow$get('mutect_opts')
                    
-                   execute_cmds = FALSE
-                   
+
 ){
   
   pairedset = paired_bam_set(tumor_bam = tumor_bam, normal_bam = normal_bam, 
@@ -80,7 +81,7 @@ mutect <- function(tumor_bam,
   lapply(list(tumor_bam, normal_bam, pairedset$out_prefix_chr, pairedset$chrs_names), length)
   
   cmd_mutect <- sprintf("%s %s -Djava.io.tmpdir=%s -jar %s --analysis_type MuTect --reference_sequence %s --input_file:tumor %s --input_file:normal %s --out %s  --coverage_file %s %s %s",
-                        java_exe, mem_mutect, java_tmp, mutect_jar, ref_fasta, 
+                        java_exe, mem_mutect, java_tmp, mutect_jar, ref_fasta_path, 
                         tumor_bam, normal_bam,
                         mutects, wigs,
                         mutect_opts, pairedset$gatk_intervals)
@@ -88,14 +89,20 @@ mutect <- function(tumor_bam,
   
   # .filter='judgement==KEEP'
   # in case of a single file, this mean a read and write operation
-  merged_mutect = paste0(pairedset$out_prefix, "_merged.mutect.tsv")
-  cmd_merge = sprintf("flowr ultraseq::merge_sheets x=%s outfile=%s",
+  merged_mutect = paste0(pairedset$out_prefix, "_mutect.merged.tsv")
+  cmd_merge1 = sprintf("flowr ultraseq::merge_sheets x=%s outfile=%s",
                       paste(mutects, collapse = ","), merged_mutect)
+  
+  # @sbamin, create a filtered file by default
+  merged_filt = paste0(pairedset$out_prefix, "_mutect.merged.keep.tsv")
+  cmd_merge2 = sprintf("flowr ultraseq::merge_sheets x=%s outfile=%s .filter='judgement==KEEP'",
+                      paste(mutects, collapse = ","), merged_filt)
+  cmd_merge = paste(cmd_merge1, cmd_merge2, sep = ";")
+  
 
   cmds = c(cmds, mutect_merge = cmd_merge)
   
-  if(execute_cmds)
-    sapply(cmds, system)
+  #if(execute_cmds) sapply(cmds, system)
 
   flowmat = to_flowmat(cmds, samplename = samplename)
   return(list(flowmat=flowmat, outfiles=list(all = mutects, merged = merged_mutect)))

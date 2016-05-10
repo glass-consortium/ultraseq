@@ -11,8 +11,8 @@ mutect(tumor_bam, normal_bam, samplename = opts_flow$get("samplename"),
   mutect_jar = opts_flow$get("mutect_jar"),
   cpu_mutect = opts_flow$get("cpu_mutect"),
   mem_mutect = opts_flow$get("java_mem"),
-  ref_fasta = opts_flow$get("ref_fasta"),
-  mutect_opts = opts_flow$get("mutect_opts"), execute_cmds = FALSE)
+  ref_fasta_path = opts_flow$get("ref_fasta_path"),
+  mutect_opts = opts_flow$get("mutect_opts"))
 }
 \arguments{
 \item{tumor_bam}{path to a tumor bam file}
@@ -40,7 +40,7 @@ Turning is option OFF is not fully supported.}
 
 \item{mem_mutect}{amount of memory to be used by mutect [-Xmx12g]}
 
-\item{ref_fasta}{path to the reference genome in fasta format}
+\item{ref_fasta_path}{path to the reference genome in fasta format}
 
 \item{mutect_opts}{additional arguments passed onto mutect}
 }

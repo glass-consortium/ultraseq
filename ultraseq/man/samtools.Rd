@@ -4,9 +4,18 @@
 \alias{samtools_sort_index}
 \title{set of wrapper functions around samtools}
 \usage{
-samtools_sort_index(x, outbam, samtools_exe)
+samtools_sort_index(x, samplename, outbam, samtools_exe)
 }
 \arguments{
 \item{x}{input sam/bam file to be sorted and indexed}
+
+\item{samplename}{sample name}
+
+\item{outbam}{output bam file}
+
+\item{samtools_exe}{path to samtools}
+}
+\description{
+several wrappers around samtools
 }
 

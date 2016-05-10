@@ -8,7 +8,7 @@
 
 # require(flowr)
 # require(params)
-# require(ngsflows)
+# require(ultraseq)
 
 
 ## use following as a example
@@ -19,7 +19,7 @@ if(FALSE){
   library(drat)
   drat::addRepo("sahilseth")      
   install.packages("flowr")
-  install.packages("ngsflows")
+  install.packages("ultraseq")
   
   fqdir = "/rsrch2/iacs/ngs_runs/150806_SN1120_0348_BC79KEACXX/fastqs/Y76I8n1Y76/Project_Pancreatic-MS132"
   fqsheet = create_fq_sheet(x=fqdir)

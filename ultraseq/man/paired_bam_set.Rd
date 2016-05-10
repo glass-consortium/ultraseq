@@ -2,44 +2,25 @@
 % Please edit documentation in R/bam_set.R
 \name{paired_bam_set}
 \alias{paired_bam_set}
-\title{Title}
+\title{Create a single object, to be used by multiple modules}
 \usage{
 paired_bam_set(tumor_bam, normal_bam, out_prefix, is_merged, split_by_chr,
-  ref_fasta = opts_flow$get("ref_fasta"))
+  ref_fasta_path = opts_flow$get("ref_fasta_path"))
 }
 \arguments{
-\item{tumor_bam}{}
+\item{tumor_bam}{tumor bam file}
 
-\item{normal_bam}{}
+\item{normal_bam}{normal bam file}
 
-\item{out_prefix}{}
+\item{out_prefix}{output prefix for paired sample analysis, example tumorname___normalname}
 
-\item{is_merged}{}
+\item{is_merged}{are bam files merged - single bam file for all chromosomes [TRUE/FALSE]}
 
-\item{split_by_chr}{}
+\item{split_by_chr}{should downstream analysis be split by chr.}
+
+\item{ref_fasta_path}{path to reference fasta file}
 }
 \description{
-Title
-}
-\details{
-\code{
-# single: tumor/normal
-  |__: can create a out-prefix
-
-multiple: tumor/normal
-  |__: assumed one for each chr.
-  |__: length   -  of both files should be same
-  |__: sequence -  of files and those of chrs, is assumed to be the same
-  |__: length of chr and tumor normal files should be the same
-  | 
-  |__: DICT is available. 
-  |__: length and sequence of dict, is assumed (lexicographically sorted)
-  |__: 
-  |__: 
-  |__: 
-create a definitive out prefix
-samplename, may not always be unique, using bams is better
-determine output file name, if out_prefix is not provided
-}
+Create a single object, to be used by multiple modules
 }
 

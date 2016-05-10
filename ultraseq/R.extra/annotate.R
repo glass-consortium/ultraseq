@@ -332,7 +332,7 @@ annotate <- function(files, samplename = opts_flow$get("samplename"),
                      outfile,
                      build = "hg19",
                      annovar_dir = opts_flow$get("annovar_dir"),
-                     annotate_func = "ngsflows::annotate_mutect"){
+                     annotate_func = "ultraseq::annotate_mutect"){
 
   if(missing(outfile))
     outfile <- paste0(tools::file_path_sans_ext(basename(files[1])),  "_merged.annovar.tsv")
@@ -345,7 +345,7 @@ annotate <- function(files, samplename = opts_flow$get("samplename"),
   cmd_ann = sprintf("flowr %s x=%s oprefix=%s build=%s full=TRUE use_uuid=FALSE annovarPath=%s",
                     annotate_func, x, anns, build, annovar_dir)
 
-  cmd_merge = sprintf("flowr ngsflows::merge_sheets x=%s outfile=%s",
+  cmd_merge = sprintf("flowr ultraseq::merge_sheets x=%s outfile=%s",
                       paste(anns, collapse = ","), outfile)
   cmds = list(annotate = cmd_ann, annotate_merge = cmd_merge)
 
@@ -364,9 +364,9 @@ if(FALSE){
   tmp <- annotate_mutect(mutect)
 
   x="/rsrch2/iacs/flowr/runs/sarco/rna_mutect/rna_mutect-610-20150915-04-08-15-V41B7wF2/tmp/RNA_Barcode_None_001.R_2014_08_22_14_58_37_user_PRO-65-Sarcomatoid_RNA_Seq_610-T2_trimmed_trimmed.fastq_rg_reorder_chr20.mutect.txt"
-  library(IACSUtil);require(stringr);require(dplyr)
+  require(stringr);require(dplyr)
   #source('~/iacsSVN/RPacks/IACSUtil/R/annotate_variants.R')
-  devtools::load_all("~/Dropbox/iacsSVN/RPacks/IACSUtil")
+  #devtools::load_all("~/Dropbox/iacsSVN/RPacks/IACSUtil")
   #debug(annotate_mutect)
   #debug(formatMutect)
   annotate_mutect(x, protocols_f = "cosmic70")
