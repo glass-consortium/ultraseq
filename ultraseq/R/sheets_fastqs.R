@@ -7,7 +7,7 @@
 
 detect_fq_format2 <- function(x){
   
-  if(grepl(".*_([ATGC]*|NoIndex)_L00([0-9]*)_R([0-9]*)_([0-9]*).fastq.gz",basename(x[1]))){
+  if(grepl(".*_([ATGC]*|NoIndex)_L00([0-9]*)_R([0-9]*)_([0-9]*).fastq.gz", basename(x[1]))){
     
     message("Using CASAVA 1.8 naming format")
     format <- "{{samplename}}_{{index}}_L00{{lane}}_R{{read}}_{{num}}.fastq.gz"
@@ -20,8 +20,8 @@ detect_fq_format2 <- function(x){
     format <- "{{samplename}}_S[0-9]*_L00{{lane}}_[RI]{{read}}_{{num}}.fastq.gz"
     
   }else{
-    stop(c("Looks like we could not understand pattern in names of fastq files",
-           print(paste(x, collapse = "\n"))))
+    stop(c("Looks like we could not understand pattern in names of fastq files ",
+           paste(head(basename(x)), collapse = "\n")))
   }
 }
 
