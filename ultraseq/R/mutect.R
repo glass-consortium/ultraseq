@@ -96,7 +96,7 @@ mutect <- function(tumor_bam,
   # @sbamin, create a filtered file by default
   merged_filt = paste0(pairedset$out_prefix, "_mutect.merged.keep.tsv")
   keep_mutect <- sprintf("grep -E 'contig|KEEP' %s > %s_calls.KEEP.tsv",
-                         merged, merged.filt)
+                         merged_mutect, merged_filt)
   
   cmd_merge = paste(cmd_merge1, keep_mutect, sep = ";")
   
