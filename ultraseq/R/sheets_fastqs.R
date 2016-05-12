@@ -18,9 +18,9 @@ detect_fq_format2 <- function(x){
     # miseq output
     message("Using MiSeq/bcl2fastq 2.0 naming format")
     format <- "{{samplename}}_S[0-9]*_L00{{lane}}_[RI]{{read}}_{{num}}.fastq.gz"
-    
+
   }else{
-    stop(c("Looks like we could not understand pattern in names of fastq files ",
+    stop(c("Looks like we could not understand pattern in names of fastq files\n",
            paste(head(basename(x)), collapse = "\n")))
   }
 }
