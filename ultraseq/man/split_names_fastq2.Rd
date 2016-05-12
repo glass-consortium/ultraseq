@@ -12,6 +12,8 @@ split_names_fastq2(x,
 \item{x}{a fastq file}
 
 \item{format}{naming format for the file}
+
+\item{strict_format_checking}{TRUE (error)/FALSE(warning)}
 }
 \description{
 split_names_fastq2

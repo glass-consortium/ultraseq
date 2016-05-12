@@ -2,7 +2,7 @@
 % Please edit documentation in R/sheets_fastqs.R
 \name{create_fq_sheet}
 \alias{create_fq_sheet}
-\title{create a sheet of fastq}
+\title{Create a table with details on names of fastq files}
 \usage{
 create_fq_sheet(x, ext = opts_flow$get("fastq_extension"),
   format = opts_flow$get("fastq_format"), strict_format_checking = FALSE,
@@ -20,6 +20,6 @@ create_fq_sheet(x, ext = opts_flow$get("fastq_extension"),
 \item{sample_prefix}{A prefix to add to all sample names, run, project etc.....}
 }
 \description{
-create a sheet of fastq
+Create a table with details on names of fastq files
 }
 

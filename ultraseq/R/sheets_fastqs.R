@@ -30,6 +30,7 @@ detect_fq_format2 <- function(x){
 #'
 #' @param x a fastq file
 #' @param format naming format for the file
+#' @param strict_format_checking TRUE (error)/FALSE(warning)
 #'
 split_names_fastq2 <- function(x, 
                                format = "{{samplename}}_{{index}}_L00{{lane}}_R{{read}}_{{num}}.fastq.gz", 
@@ -129,7 +130,7 @@ options(
   ngs_fq_ext = "fastq.gz"
 )
 
-#' create a sheet of fastq
+#' Create a table with details on names of fastq files
 #' @param x path to a fastq folder
 #' @param ext extensions to look for. A regex to search for fastq files
 #' @param format auto detect. Pattern specify pattern acceptable to split_fastq_names. If missing will detect hiseq and miseq
