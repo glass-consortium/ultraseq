@@ -15,6 +15,8 @@ create_fq_sheet(x, ext = opts_flow$get("fastq_extension"),
 
 \item{format}{auto detect. Pattern specify pattern acceptable to split_fastq_names. If missing will detect hiseq and miseq}
 
+\item{strict_format_checking}{If some file names do not follow the format properly die with error (TRUE), continue with warning (FALSE)}
+
 \item{sample_prefix}{A prefix to add to all sample names, run, project etc.....}
 }
 \description{

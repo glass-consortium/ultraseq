@@ -133,6 +133,7 @@ options(
 #' @param x path to a fastq folder
 #' @param ext extensions to look for. A regex to search for fastq files
 #' @param format auto detect. Pattern specify pattern acceptable to split_fastq_names. If missing will detect hiseq and miseq
+#' @param strict_format_checking If some file names do not follow the format properly die with error (TRUE), continue with warning (FALSE)
 #' @param sample_prefix A prefix to add to all sample names, run, project etc.....
 #' 
 #' @export
