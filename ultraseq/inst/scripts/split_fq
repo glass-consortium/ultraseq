@@ -22,7 +22,7 @@ Split a fastq files into specific number of (predetermined) chunks.
 One needs to supply either number of chunks (using -c) OR number of reads (using -n), but not both.
 
 EOF
-} 
+}
 
 fq=  chunks= num= prefix=
 
@@ -112,7 +112,7 @@ fi
 
 
 
-## actual splitting
+# actual splitting
 base="$(basename `mktemp`)_"
 $cat_cmd $fq | split -l $numl -d -a 3 - $base
 
@@ -120,7 +120,7 @@ $cat_cmd $fq | split -l $numl -d -a 3 - $base
 #-d  adds digit prefixes instead of alphabetic
 #-a 3  allows you to add more digits to output files.
 #b  is the prefix to use
-#In this example: output will be b000...b999 
+#In this example: output will be b000...b999
 
 
 ## rename them:
@@ -160,4 +160,3 @@ cat $cmdfile | parallel -j 12
 ##tar.gz
 ##~% echo "${FILE##*.}"
 ##gz
-

@@ -2,7 +2,7 @@
 #'
 #' @param x a character vector of file to be merged
 #' @param outfile path to the merged output file
-#' @param .filter a filter string
+#' @param .filter a filter string. EXPERIMENTAL
 #' @param ... other arguments supplied to params::read_sheet
 #' 
 #' @importFrom dplyr bind_rows
@@ -11,8 +11,10 @@
 #' @export
 #' 
 #' @examples \dontrun{
-#' merge_sheets(c("mutect.chr1.txt", "mutect.chr2.txt"), 
+#' df = merge_sheets(c("mutect.chr1.txt", "mutect.chr2.txt"), 
 #'    outfile = "mutect.merged.txt", .filter = "judgement==KEEP")
+#'    
+#'  dim(df)
 #' }
 #' 
 merge_sheets <- function(x, outfile, .filter = NA, ...){
@@ -37,6 +39,7 @@ merge_sheets <- function(x, outfile, .filter = NA, ...){
   # if fails try using dplyr
   mrgd = try(bind_rows(tmp))
   
+  # write to a file if outfile is provided
   if(!missing(outfile))
     write_sheet(mrgd, outfile)
   

@@ -11,7 +11,7 @@ merge_sheets(x, outfile, .filter = NA, ...)
 
 \item{outfile}{path to the merged output file}
 
-\item{.filter}{a filter string}
+\item{.filter}{a filter string. EXPERIMENTAL}
 
 \item{...}{other arguments supplied to params::read_sheet}
 }
@@ -20,8 +20,10 @@ merge tables by row, and filter rows
 }
 \examples{
 \dontrun{
-merge_sheets(c("mutect.chr1.txt", "mutect.chr2.txt"), 
+df = merge_sheets(c("mutect.chr1.txt", "mutect.chr2.txt"), 
    outfile = "mutect.merged.txt", .filter = "judgement==KEEP")
+   
+ dim(df)
 }
 
 }

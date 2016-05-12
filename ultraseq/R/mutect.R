@@ -95,11 +95,11 @@ mutect <- function(tumor_bam,
   
   # @sbamin, create a filtered file by default
   merged_filt = paste0(pairedset$out_prefix, "_mutect.merged.keep.tsv")
-  cmd_merge2 = sprintf("flowr ultraseq::merge_sheets x=%s outfile=%s .filter='judgement==KEEP'",
-                      paste(mutects, collapse = ","), merged_filt)
-  cmd_merge = paste(cmd_merge1, cmd_merge2, sep = ";")
+  keep_mutect <- sprintf("grep -E 'contig|KEEP' %s > %s_calls.KEEP.tsv",
+                         merged_mutect, merged_filt)
   
-
+  cmd_merge = paste(cmd_merge1, keep_mutect, sep = ";")
+  
   cmds = c(cmds, mutect_merge = cmd_merge)
   
   #if(execute_cmds) sapply(cmds, system)
