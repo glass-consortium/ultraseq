@@ -31,7 +31,9 @@ detect_fq_format2 <- function(x){
 #' @param x a fastq file
 #' @param format naming format for the file
 #'
-split_names_fastq2 <- function(x, format = "{{samplename}}_{{index}}_L00{{lane}}_R{{read}}_{{num}}.fastq.gz"){
+split_names_fastq2 <- function(x, 
+                               format = "{{samplename}}_{{index}}_L00{{lane}}_R{{read}}_{{num}}.fastq.gz", 
+                               strict_format_checking = FALSE){
   
   ## --- regex pattern for each piece
   lst_patterns = list(
@@ -50,7 +52,7 @@ split_names_fastq2 <- function(x, format = "{{samplename}}_{{index}}_L00{{lane}}
   repl <- paste("\\",1:length(vars), sep="",collapse=",")
   mat <- gsub(fmt, repl, basename(x))
   
-  ## longer, but more robust
+  # longer, but more robust
   mat = lapply(1:length(mat), function(i){
     out = strsplit(mat[i], ",")[[1]]
     add_vars = length(vars) - length(out)
@@ -65,9 +67,11 @@ split_names_fastq2 <- function(x, format = "{{samplename}}_{{index}}_L00{{lane}}
   mat <- do.call(rbind, mat)
   mat <- data.frame(mat, x, stringsAsFactors = FALSE)
   
-  ## if all files were not parsed properly
-  ## show extra message, to help debug
-  ## This does not catch, when some file are parsed improperly.
+  # ------------ test if none of the file have the correct pattern ---------------- #
+  # if all files were not parsed properly
+  # show extra message, to help debug
+  #
+  # This does not catch, when some file are parsed improperly.
   if(ncol(mat) != length(c(vars, "file"))){
     message("Final evaluated regular expression: ", fmt, " ---> ", repl)
     message("Format was not able to split fastq names properly.")
@@ -75,8 +79,15 @@ split_names_fastq2 <- function(x, format = "{{samplename}}_{{index}}_L00{{lane}}
     stop("Exiting create_fq_sheet...")
   }
   
-  ## if all is well
+  # ------- test if even on file fails pattern ----------
+  if(strict_format_checking & mean(complete.cases(mat)) < 1){
+    stop("Some file names do not have the correct format, please check.",
+         "\nRefer to the warning message provided below.")
+  }
+  
+  # if all is well
   colnames(mat) <- c(vars, "file")
+  
   return(mat)
 }
 
@@ -128,6 +139,7 @@ options(
 create_fq_sheet <- function(x,
                             ext = opts_flow$get("fastq_extension"),
                             format = opts_flow$get("fastq_format"),
+                            strict_format_checking = FALSE,
                             sample_prefix = ""){
   
   # get the extension to use
@@ -147,7 +159,7 @@ create_fq_sheet <- function(x,
   if(is.null(format))
     format <- detect_fq_format2(fqs)
   
-  fqmat <- split_names_fastq2(fqs, format)
+  fqmat <- split_names_fastq2(fqs, format, strict_format_checking = strict_format_checking)
   
   # if one needs to change the samplename to include anything in this
   fqmat$samplename = paste0(sample_prefix, fqmat$samplename)

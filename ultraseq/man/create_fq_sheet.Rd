@@ -5,7 +5,8 @@
 \title{create a sheet of fastq}
 \usage{
 create_fq_sheet(x, ext = opts_flow$get("fastq_extension"),
-  format = opts_flow$get("fastq_format"), sample_prefix = "")
+  format = opts_flow$get("fastq_format"), strict_format_checking = FALSE,
+  sample_prefix = "")
 }
 \arguments{
 \item{x}{path to a fastq folder}

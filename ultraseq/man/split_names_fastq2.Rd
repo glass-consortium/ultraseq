@@ -5,7 +5,8 @@
 \title{split_names_fastq2}
 \usage{
 split_names_fastq2(x,
-  format = "{{samplename}}_{{index}}_L00{{lane}}_R{{read}}_{{num}}.fastq.gz")
+  format = "{{samplename}}_{{index}}_L00{{lane}}_R{{read}}_{{num}}.fastq.gz",
+  strict_format_checking = FALSE)
 }
 \arguments{
 \item{x}{a fastq file}
