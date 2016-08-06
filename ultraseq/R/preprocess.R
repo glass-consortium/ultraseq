@@ -221,14 +221,14 @@ get_fasta_chrs <- function(fa = opts_flow$get("ref_fasta_path"),
 }
 
 # using Rsamtools
-#' @import Rsamtools
-get_bam_chrs <- function(x){
-  if(file.exists(x)){
-    out = Rsamtools::scanBamHeader(x)
-    chrs = names(out[[1]]$targets)
-  }else{
-    message("bam does not exists, returning hg19 chrs")
-    chrs = c(1:22,"X","Y","MT")
-  }
-  return(chrs)
-}
+#' #' @import Rsamtools
+#' get_bam_chrs <- function(x){
+#'   if(file.exists(x)){
+#'     out = Rsamtools::scanBamHeader(x)
+#'     chrs = names(out[[1]]$targets)
+#'   }else{
+#'     message("bam does not exists, returning hg19 chrs")
+#'     chrs = c(1:22,"X","Y","MT")
+#'   }
+#'   return(chrs)
+#' }
